@@ -1,11 +1,11 @@
 <p align="center"><img src="resources/logo.png" alt="MarkText" width="120" height="120"></p>
 
-<h1 align="center">TrackPoint78 </h1>
+<h1 align="center">星尘 X99 ，修改自 TrackPoint78 ，以下是原版介绍。</h1> 
 
 <h5 align="center">基于CH582M的小红点三模机械键盘方案</h5>
 
 <div align="center">
-<a href="./README.md">简体中文</a> <a href="./README-EN.md">English</a>
+<a href="./README.md">简体中文</a> <a href="./README-EN.md">English</a> 
 </div>
 
 TP78是基于CH582M的三模机械键盘方案。以满足带有小红点 便携 无线 自定义快捷键四大根本需求为出发点设计的退烧键盘。基于CH582M三模75%配列，带有小红点(指点杆)，并使用TouchBar实现鼠标左中右键。OLED、Hub和磁吸接口。外壳可使用拓竹A1mini打印拼装。**（注意开源协议，GPL3.0，请尊重开源，欢迎交流，交流群：678606780）**
