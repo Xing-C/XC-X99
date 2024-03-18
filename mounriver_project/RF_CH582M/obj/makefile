@@ -1,6 +1,6 @@
 ################################################################################
-# MRS Version: 1.9.0
-# Automatically-generated file. Do not edit!
+# MRS Version: 1.9.1
+# 自动生成的文件。不要编辑！
 ################################################################################
 
 -include ../makefile.init
@@ -48,12 +48,12 @@ SECONDARY_SIZE += \
 RF_CH582M.siz \
 
 
-# All Target
+# 所有目标
 all: RF_CH582M.elf secondary-outputs
 
-# Tool invocations
+# 工具调用
 RF_CH582M.elf: $(OBJS) $(USER_OBJS)
-	@	@	riscv-none-elf-gcc -mabi=ilp32 -mcmodel=medany -msmall-data-limit=8 -mno-save-restore -march=rv32imac_zicsr -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "E:\Project\tp78_v2\mounriver_project\RF_CH582M\Ld\Link.ld" -nostartfiles -Xlinker --gc-sections -L"../" -L"E:\Project\tp78_v2\mounriver_project\RF_CH582M\StdPeriphDriver" -L"E:\Project\tp78_v2\mounriver_project\RF_CH582M\LIB" -Xlinker --print-memory-usage -Wl,-Map,"RF_CH582M.map" --specs=nano.specs --specs=nosys.specs -o "RF_CH582M.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	@	@	riscv-none-elf-gcc -mabi=ilp32 -mcmodel=medany -msmall-data-limit=8 -mno-save-restore -march=rv32imac_zicsr -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "E:\Personal\Personal\GitHub\XC-X99\mounriver_project\RF_CH582M\Ld\Link.ld" -nostartfiles -Xlinker --gc-sections -L"../" -L"E:\Personal\Personal\GitHub\XC-X99\mounriver_project\RF_CH582M\StdPeriphDriver" -L"E:\Personal\Personal\GitHub\XC-X99\mounriver_project\RF_CH582M\LIB" -Xlinker --print-memory-usage -Wl,-Map,"RF_CH582M.map" --specs=nano.specs --specs=nosys.specs -o "RF_CH582M.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@	@
 RF_CH582M.hex: RF_CH582M.elf
 	@	riscv-none-elf-objcopy -O ihex "RF_CH582M.elf"  "RF_CH582M.hex"
@@ -64,7 +64,7 @@ RF_CH582M.lst: RF_CH582M.elf
 RF_CH582M.siz: RF_CH582M.elf
 	@	riscv-none-elf-size --format=berkeley "RF_CH582M.elf"
 	@	@
-# Other Targets
+# 其他目标
 clean:
 	-$(RM) $(ASM_UPPER_DEPS)$(OBJS)$(SECONDARY_FLASH)$(SECONDARY_LIST)$(SECONDARY_SIZE)$(ASM_DEPS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS) RF_CH582M.elf
 	-@

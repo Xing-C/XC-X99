@@ -1,8 +1,2 @@
 # other
-*.xml
-KEYBOARD_CH582M/obj
-*.d
-*.o
-*.mk
-*.elf
-*.map
+*\obj\*
