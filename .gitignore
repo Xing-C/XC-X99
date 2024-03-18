@@ -1,3 +1,8 @@
 # other
-*.prefs
 *.xml
+KEYBOARD_CH582M/obj
+*.d
+*.o
+*.mk
+*.elf
+*.map
