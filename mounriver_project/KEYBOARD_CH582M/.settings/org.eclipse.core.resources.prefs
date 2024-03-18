@@ -2,6 +2,7 @@ eclipse.preferences.version=1
 encoding//HAL/OLEDFONT.c=GBK
 encoding//HAL/include/HW_I2C.h=GBK
 encoding//LIB/CH58xBLE_ROM.h=GBK
+encoding//Ld/Link.ld=GBK
 encoding//Packages/CherryUSB/class/hid/usbd_hid.h=GBK
 encoding//Private/TP78_MPR121_LIB/MPR121_old.c=GBK
 encoding//Private/TP78_MPR121_LIB/MPR121_old.h=GBK
