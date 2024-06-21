@@ -258,15 +258,7 @@ uint8_t InitRootU2Device(void)
                     s = CtrlSetUsb2Config(cfg); // 设置USB设备配置
                     if(s == ERR_SUCCESS)
                     {
-                        s = CtrlGetU2HIDDeviceReport(dv_cls); //获取报表描述符
-                        if(s == ERR_SUCCESS)
-                        {
-                            for(i = 0; i < 64; i++)
-                            {
-                                PRINT("x%02X ", (uint16_t)(Com_Buffer[i]));
-                            }
-                            PRINT("\n");
-                        }
+                        //	    					Set_Idle( );
                         //	需保存端点信息以便主程序进行USB传输
                         ThisUsb2Dev.DeviceStatus = ROOT_DEV_SUCCESS;
                         if(if_cls == 1)

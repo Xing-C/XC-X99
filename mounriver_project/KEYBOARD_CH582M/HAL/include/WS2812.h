@@ -30,18 +30,11 @@
   #define RED_INDEX               1
   #define BLUE_INDEX              2
 
-  #define BACKLIGHT_MODE_OFF      0
-  #define BACKLIGHT_MODE_BREATH   1
-  #define BACKLIGHT_MODE_WATERFUL 2
-  #define BACKLIGHT_MODE_TOUCH    3
-  #define BACKLIGHT_MODE_RAINBOW  4
-  #define BACKLIGHT_MODE_NORMAL   5
-
   #define PWM_SEND_HIGH_BIT()     TMR1_PWMActDataWidth(TIMING_ONE)    //0.85us
   #define PWM_SEND_LOW_BIT()      TMR1_PWMActDataWidth(TIMING_ZERO)   //0.4us
   #define PWM_SEND_RESET()        TMR1_PWMActDataWidth(TIMING_RESET)  //0us
 
-  #define LED_NUMBER              5    // 83个灯 - 其他键盘布局虚修改此处
+  #define LED_NUMBER              85    // 83个灯 - 其他键盘布局虚修改此处
   #define LED_DEFAULT_BRIGHTNESS  15    // 默认亮度 - 15/255
 
   #define Waterful_Repeat_Times   2     // 控制周期*2 = 流水灯周期

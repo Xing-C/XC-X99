@@ -31,7 +31,6 @@ void APPJumpKBoot(void)
  * Input          : 无
  * Return         : 无
  *******************************************************************************/
-#ifndef LOW_MEM
 __HIGH_CODE
 void APPJumpBoot(void)   //此段代码必须运行在RAM中
 {
@@ -54,7 +53,7 @@ void APPJumpBoot(void)   //此段代码必须运行在RAM中
   R8_SAFE_ACCESS_SIG = 0;//进入后执行复位，复位类型为上电复位
   while(1);//营造空片的现象，启动时就会停在BOOT，等烧写，超时时间10s
 }
-#endif
+
 /*******************************************************************************
  * Function Name  : SoftReset
  * Description    : 软件复位
@@ -242,7 +241,6 @@ void GotoLowpower(enum LP_Type type)
       LowPower_Idle();
       break;
     case lp_sw_mode: // 软件低功耗处理
-    case lp_no_sleep_mode:
       TP78Reinit(0, type);
       break;
     case lp_halt_mode: // 暂停模式 - 320uA
@@ -262,6 +260,7 @@ void GotoLowpower(enum LP_Type type)
     default:  // do not run here
       return;
   }
+  g_Enable_Status.sleep = TRUE;
 #else
   return;
 #endif
