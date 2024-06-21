@@ -189,7 +189,7 @@ static uint8 advertData[] =
 };
 
 // Device name attribute value
-static CONST uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "TP78v2";
+static CONST uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "XingChenX99";
 
 // HID Dev configuration
 static hidDevCfg_t hidEmuCfg =

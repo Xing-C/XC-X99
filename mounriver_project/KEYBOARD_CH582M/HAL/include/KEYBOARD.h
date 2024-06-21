@@ -16,8 +16,8 @@
     #define Row_GPIO_(x)    GPIOB_ ## x
     #define Colum_GPIO_(x)  GPIOA_ ## x
 
-    #define ROW_SIZE        6    // 键盘行数 - 其它键盘布局需修改此处
-    #define COL_SIZE        14   // 键盘列数 - 其它键盘布局需修改此处
+    #define ROW_SIZE        9    // 键盘行数 - 其它键盘布局需修改此处
+    #define COL_SIZE        11   // 键盘列数 - 其它键盘布局需修改此处
 
     #define MAX_PRESS_COUNT       15    // 8个特殊键+6个一般键+1个Fn键
     #define MAX_CHANGETIMES       24    // 按下Capslock改变键盘布局检测次数
@@ -70,7 +70,24 @@
     #define KEY_0   0x27    //)
 
     //others
-    #define KEY_ENTER       0x28
+    #define KEY_NumLock          0x53 // 小键盘锁定
+    #define KEY_Divide           0x54 // 斜杠/  ÷
+    #define KEY_Asterisk         0x55 // *
+    #define KEY_Minus            0x56 // -
+    #define KEY_Plus             0x57 // +
+    #define KEY_1_AndEnd         0x59
+    #define KEY_2_AndDownArrow   0x5A
+    #define KEY_3_AndPageDn      0x5B
+    #define KEY_4_AndLeftArrow   0x5C
+    #define KEY_Alpha_5          0x5D // 小键盘5
+    #define KEY_6_AndRightArrow  0x5E
+    #define KEY_7_AndHome        0x5F
+    #define KEY_8_AndUpArrow     0x60
+    #define KEY_9_AndPageUp      0x61
+    #define KEY_0_AndInsert      0x62
+    #define KEY_PeriodAndDelete  0x63 // . 小数点
+    #define KEY_NumENTER         0x58 // 小键盘回车键 -上方添加右侧小键盘按键
+    #define KEY_ENTER       0x28    //大回车键
     #define KEY_ESCAPE      0x29
     #define KEY_BACKSPACE   0x2A
     #define KEY_TAB         0x2B

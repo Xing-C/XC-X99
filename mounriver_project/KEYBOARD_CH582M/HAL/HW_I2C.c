@@ -171,3 +171,18 @@ uint8_t HW_I2C_Muti_RD_Reg(uint8_t reg, uint8_t *dat, uint8_t addr, uint8_t len)
 
   return err;
 }
+
+/*******************************************************************************
+ * Function Name  : HW_I2C_SendLEDNumber
+ * Description    : 通过I2C发送按下按键的LED位号.
+ * Input          : led_number，LED的编号。
+ *******************************************************************************/
+
+// 假设第四个从机接收LED编号的寄存器地址为 0x10
+#define FOURTH_SLAVE_LED_NUM_REG_ADDRESS 0x10
+
+// 向从机发送LED编号
+uint8_t HW_I2C_SendLEDNumber(uint8_t led_number) {
+    const uint8_t fourth_slave_address = 0x55; // C8T6 地址0x55 \ 85
+    return HW_I2C_WR_Reg(FOURTH_SLAVE_LED_NUM_REG_ADDRESS, led_number, fourth_slave_address);
+}

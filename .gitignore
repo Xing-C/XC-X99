@@ -1,2 +1,20 @@
 # other
 *\obj\*
+*.mk
+*.bin
+*.elf
+*.o
+*.lst
+*.map
+mounriver_project/KEYBOARD_CH582M/obj/makefile
+/.history
+*.BIN
+*.hex
+*.elf
+*.lst
+*.map
+*.7z
+*.zip
+/mounriver_project/KEYBOARD_CH582M/obj
+/mounriver_project/KEYBOARD_CH582M/obj
+/mounriver_project/KEYBOARD_CH582M/obj

@@ -137,7 +137,7 @@ typedef union {
 /* DataFlash 基地址0x70000 */
 #if 0    // for old version
 #define DATAFLASH_ADDR_CustomKey            (8*1024)      // 从8K地址开始存放键盘布局，map空余空间：0x4~0x210C
-#define DATAFLASH_ADDR_Extra_CustomKey      (9*1024)      // 从9K地址开始存放键盘额外布局
+//#define DATAFLASH_ADDR_Extra_CustomKey      (9*1024)      // 从9K地址开始存放键盘额外布局
 #define DATAFLASH_ADDR_LEDStyle             (10*1024)     // 背光样式
 #define DATAFLASH_ADDR_BLEDevice            (10*1024+4)   // 蓝牙默认连接设备编号
 #define DATAFLASH_ADDR_RForBLE              (10*1024+8)   // 启动默认RF模式或者BLE模式
@@ -148,10 +148,10 @@ typedef union {
 #define DEFAULT_IDLE_MAX_PERIOD             (180 * (1000 / SYS_PERIOD)) // idle_cnt大于该值则进入屏保
 #define DEFAULT_LP_MAX_PERIOD               (240 * (1000 / SYS_PERIOD)) // idle_cnt大于该值则进入低功耗模式
 
-#define MOTOR_PIN                           GPIO_Pin_19
-#define MOTOR_RUN()                         { GPIOB_SetBits( MOTOR_PIN ); }
-#define MOTOR_STOP()                        { GPIOB_ResetBits( MOTOR_PIN ); }
-#define MOTOR_Init()                        { GPIOB_SetBits( MOTOR_PIN ); GPIOB_ModeCfg( MOTOR_PIN, GPIO_ModeOut_PP_5mA ); MOTOR_STOP(); }
+#define MOTOR_PIN                           GPIO_Pin_5 // 从 PB19改到PA5
+#define MOTOR_RUN()                         { GPIOA_SetBits( MOTOR_PIN ); }
+#define MOTOR_STOP()                        { GPIOA_ResetBits( MOTOR_PIN ); }
+#define MOTOR_Init()                        { GPIOA_SetBits( MOTOR_PIN ); GPIOA_ModeCfg( MOTOR_PIN, GPIO_ModeOut_PP_5mA ); MOTOR_STOP(); }
 #define MOTOR_GO()                          { MOTOR_RUN(); tmos_start_task( halTaskID, MOTOR_STOP_EVENT, MS1_TO_SYSTEM_TIME(100) ); }
 
 /* CapsLock LEDOn Status */

@@ -27,4 +27,5 @@
   uint8_t HW_I2C_WR_Reg( uint8_t reg, uint8_t dat, uint8_t addr );
   uint8_t HW_I2C_RD_Reg( uint8_t reg, uint8_t *dat, uint8_t addr );
   uint8_t HW_I2C_Muti_RD_Reg( uint8_t reg, uint8_t *dat, uint8_t addr, uint8_t len );
+  uint8_t HW_I2C_SendLEDNumber(uint8_t led);
 #endif

@@ -1124,7 +1124,7 @@ void HAL_Init(void)
   if ( g_Ready_Status.fatfs == FALSE ) {  // 文件系统无法挂载
     strcpy(debug_info, "FATFS-FAIL");
   }
-  PRINT("TP78 init status: %s\n", debug_info);
+  PRINT("XingChenX99 init status: %s\n", debug_info);
   /******* 初始化OLED UI *******/
 #ifdef OLED_0_96
   OLED_ShowString(2, 1, "L1");

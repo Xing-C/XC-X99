@@ -1,6 +1,6 @@
 ################################################################################
-# MRS Version: 1.9.0
-# Automatically-generated file. Do not edit!
+# MRS Version: 1.9.1
+# 自动生成的文件。不要编辑！
 ################################################################################
 
 -include ../makefile.init
@@ -46,39 +46,39 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 SECONDARY_FLASH += \
-BLE_CH582M.hex \
+BLE_CH582M-re.hex \
 
 SECONDARY_LIST += \
-BLE_CH582M.lst \
+BLE_CH582M-re.lst \
 
 SECONDARY_SIZE += \
-BLE_CH582M.siz \
+BLE_CH582M-re.siz \
 
 
-# All Target
-all: BLE_CH582M.elf secondary-outputs
+# 所有目标
+all: BLE_CH582M-re.elf secondary-outputs
 
-# Tool invocations
-BLE_CH582M.elf: $(OBJS) $(USER_OBJS)
-	@	@	riscv-none-elf-gcc -mabi=ilp32 -mcmodel=medany -msmall-data-limit=8 -mno-save-restore -march=rv32imac_zicsr -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "E:\Project\tp78_v2\mounriver_project\KEYBOARD_CH582M\Ld\Link.ld" -nostartfiles -Xlinker --gc-sections -L"../" -L"E:\Project\tp78_v2\mounriver_project\KEYBOARD_CH582M\LIB" -L"E:\Project\tp78_v2\mounriver_project\KEYBOARD_CH582M\StdPeriphDriver" -Xlinker --print-memory-usage -Wl,-Map,"BLE_CH582M.map" --specs=nano.specs --specs=nosys.specs -o "BLE_CH582M.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+# 工具调用
+BLE_CH582M-re.elf: $(OBJS) $(USER_OBJS)
+	@	@	riscv-none-elf-gcc -mabi=ilp32 -mcmodel=medany -msmall-data-limit=8 -mno-save-restore -march=rv32imac_zicsr -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "E:\Personal\Personal\GitHub\XC-X99\mounriver_project\KEYBOARD_CH582M\Ld\Link.ld" -nostartfiles -Xlinker --gc-sections -L"../" -L"E:\Personal\Personal\GitHub\XC-X99\mounriver_project\KEYBOARD_CH582M\LIB" -L"E:\Personal\Personal\GitHub\XC-X99\mounriver_project\KEYBOARD_CH582M\StdPeriphDriver" -Xlinker --print-memory-usage -Wl,-Map,"BLE_CH582M-re.map" --specs=nano.specs --specs=nosys.specs -o "BLE_CH582M-re.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@	@
-BLE_CH582M.hex: BLE_CH582M.elf
-	@	riscv-none-elf-objcopy -O ihex "BLE_CH582M.elf"  "BLE_CH582M.hex"
+BLE_CH582M-re.hex: BLE_CH582M-re.elf
+	@	riscv-none-elf-objcopy -O ihex "BLE_CH582M-re.elf"  "BLE_CH582M-re.hex"
 	@	@
-BLE_CH582M.lst: BLE_CH582M.elf
-	@	riscv-none-elf-objdump --demangle --debugging --line-numbers -D "BLE_CH582M.elf" > "BLE_CH582M.lst"
+BLE_CH582M-re.lst: BLE_CH582M-re.elf
+	@	riscv-none-elf-objdump --demangle --debugging --line-numbers -D "BLE_CH582M-re.elf" > "BLE_CH582M-re.lst"
 	@	@
-BLE_CH582M.siz: BLE_CH582M.elf
-	@	riscv-none-elf-size --format=berkeley "BLE_CH582M.elf"
+BLE_CH582M-re.siz: BLE_CH582M-re.elf
+	@	riscv-none-elf-size --format=berkeley "BLE_CH582M-re.elf"
 	@	@
 	$(MAKE) --no-print-directory post-build
 
-# Other Targets
+# 其他目标
 clean:
-	-$(RM) $(ASM_UPPER_DEPS)$(OBJS)$(SECONDARY_FLASH)$(SECONDARY_LIST)$(SECONDARY_SIZE)$(ASM_DEPS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS) BLE_CH582M.elf
+	-$(RM) $(ASM_UPPER_DEPS)$(OBJS)$(SECONDARY_FLASH)$(SECONDARY_LIST)$(SECONDARY_SIZE)$(ASM_DEPS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS) BLE_CH582M-re.elf
 	-@
 post-build:
-	-riscv-none-elf-objcopy -O binary "BLE_CH582M.elf" "BLE_CH582M.bin"
+	-riscv-none-elf-objcopy -O binary "BLE_CH582M-re.elf" "BLE_CH582M-re.bin"
 	-@
 secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_LIST) $(SECONDARY_SIZE)
 

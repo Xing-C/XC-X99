@@ -260,44 +260,53 @@ void via_data_processing(uint8_t *data, uint8_t len)
         uint16_t i, j = 3, k = 0;
         offset >>= 1; // uint16 to uint8
         size >>= 1; // uint16 to uint8
-        if (offset < (COL_SIZE + 1) * ROW_SIZE) { // layer 0
-          keyarr_ptr = (uint8_t*)CustomKey;
+
+        if (offset < (COL_SIZE) * ROW_SIZE) { // layer 0
+            keyarr_ptr = (uint8_t*)CustomKey;
         } else {  // layer 1
           keyarr_ptr = (uint8_t*)Extra_CustomKey;
-          offset -= (COL_SIZE + 1) * ROW_SIZE;
+          offset -= (COL_SIZE) * ROW_SIZE;
         }
-        keyarr_ptr += offset - offset / (COL_SIZE + 1); // 一行结束减去末尾空白键
+
+        keyarr_ptr += offset; // 直接使用offset作为偏移量
+
         for (i = offset; i < offset + size; i++, j+=2) {
-          if (i >= (COL_SIZE + 1) * ROW_SIZE) {
-            command_data[j] = 0;
-            command_data[j + 1] = 0;
-          } else {
-            command_data[j] = 0;  // MSB set to zero(USB为大端传输)
-            if (i % (COL_SIZE + 1) == COL_SIZE) command_data[j + 1] = 0;  // 一行末尾保留空白
-            else command_data[j + 1] = keyarr_ptr[k++];
-          }
+            if (i >= (COL_SIZE) * ROW_SIZE) {
+                command_data[j] = 0;
+                command_data[j + 1] = 0;
+            } else {
+                command_data[j] = 0;  // MSB set to zero(USB为大端传输)
+                command_data[j + 1] = keyarr_ptr[k++];
+            }
         }
+
         break;
     }
+
     case (uint8_t)VIA_ID_DYNAMIC_KEYMAP_SET_BUFFER: {
         /* via is used uint16 to record keymap */
         uint8_t *keyarr_ptr;
         uint16_t offset = (command_data[0] << 8) | command_data[1];
         uint16_t size = command_data[2];
         uint16_t i, j = 3, k = 0;
+
         offset >>= 1; // uint16 to uint8
         size >>= 1; // uint16 to uint8
-        if (offset < (COL_SIZE + 1) * ROW_SIZE) { // layer 0
-          keyarr_ptr = (uint8_t*)CustomKey;
+
+        if (offset < (COL_SIZE) * ROW_SIZE) { // layer 0
+            keyarr_ptr = (uint8_t*)CustomKey;
         } else {  // layer 1
-          keyarr_ptr = (uint8_t*)Extra_CustomKey;
-          offset -= (COL_SIZE + 1) * ROW_SIZE;
+            keyarr_ptr = (uint8_t*)Extra_CustomKey;
+            offset -= (COL_SIZE) * ROW_SIZE;
         }
-        keyarr_ptr += offset - offset / (COL_SIZE + 1); // 一行结束减去末尾空白键
+
+        keyarr_ptr += offset; // 直接使用offset作为偏移量
+
         for (i = offset; i < offset + size; i++, j+=2) {
-          if (i >= (COL_SIZE + 1) * ROW_SIZE) break;
-          else if (i % (COL_SIZE + 1) != COL_SIZE) keyarr_ptr[k++] = command_data[j + 1];
+            if (i >= (COL_SIZE) * ROW_SIZE) break;
+            else keyarr_ptr[k++] = command_data[j + 1];
         }
+
         DATAFLASH_Write_KeyArray(); // save configurations
         break;
     }

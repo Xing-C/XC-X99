@@ -46,7 +46,9 @@
   void HAL_Fs_Read_ble_device_info(BLE_Device_Info_t *ble_device_info);
   void HAL_Fs_Write_keyboard_spkey(uint8_t* hid_arr);
   void HAL_Fs_Read_keyboard_spkey(uint8_t* hid_arr);
+  void HAL_Fs_Reset_keyboard_matrix(void);
   void HAL_Fs_Write_keyboard_mat(const uint8_t* fp, const uint8_t* key_arr);
+  // 强制重置布局,未使用。
   void HAL_Fs_Read_keyboard_mat(const uint8_t* fp, uint8_t* key_arr);
 
 #endif

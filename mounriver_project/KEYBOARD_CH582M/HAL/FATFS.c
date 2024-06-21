@@ -546,6 +546,82 @@ void HAL_Fs_Write_keyboard_mat(const uint8_t* fp, const uint8_t* key_arr)
 }
 
 /*******************************************************************************
+ * Function Name  : HAL_Fs_Reset_keyboard_matrix
+ * Description    : 重置键盘主布局，通过复制源文件keybackup.txt并重命名为目标文件（keyboard_mat.txt）
+ * Return         : None
+ *******************************************************************************/
+void HAL_Fs_Reset_keyboard_matrix(void)
+{
+  FATFS fs;
+  FILINFO file_info;
+  FRESULT res_flash;
+
+  if (g_Ready_Status.fatfs == FALSE) return;
+
+  res_flash = f_mount( &fs, "0:", 1 );
+  if ( res_flash != FR_OK ) return;
+
+  // 删除目标文件（keyboard_mat.txt），如果存在
+  res_flash = f_stat("keyboard_mat.txt", &file_info);
+  if (res_flash == FR_OK && file_info.fsize > 0)  // 文件存在且非空
+  {
+    res_flash = f_unlink("keyboard_mat.txt");
+    if (res_flash != FR_OK)
+    {
+      // 处理删除失败的情况（如提示错误、返回等）
+      goto fs_write_keyboard_mat_end;
+    }
+  }
+
+  // 复制源文件（keybackup.txt）并重命名为目标文件（keyboard_mat.txt）
+  res_flash = f_rename("keybackup.txt", "keyboard_mat.txt");
+  if (res_flash != FR_OK)
+  {
+    // 处理复制并重命名失败的情况（如提示错误、返回等）
+    goto fs_write_keyboard_mat_end;
+  }
+
+fs_write_keyboard_mat_end:
+  f_mount( NULL, "0:", 1 );   // 卸载文件系统
+}
+/*
+void HAL_Fs_Write_keyboard_mat(const uint8_t* fp, const uint8_t* key_arr)
+{
+  FATFS fs;
+  FIL fnew;
+  FRESULT res_flash;
+  FILINFO fnow;
+  UINT fnum;
+
+  uint8_t i, j, len;
+  uint8_t wr_buf[512];  // 最大4*COL_SIZE*ROW_SIZE
+
+  if (g_Ready_Status.fatfs == FALSE) return;
+
+  res_flash = f_mount( &fs, "0:", 1 );
+  if ( res_flash != FR_OK ) return;
+
+  res_flash = f_open( &fnew, fp, FA_CREATE_ALWAYS | FA_WRITE );
+  if ( res_flash != FR_OK ) goto fs_write_kbd_mat_end;
+
+  len = 0;
+  for (i = 0; i < ROW_SIZE; i++) {
+    for (j = 0; j < COL_SIZE; j++) {
+      if (j == COL_SIZE - 1) len += unsigned_dec_to_string(key_arr[j + i * COL_SIZE], &wr_buf[len], 2);
+      else len += unsigned_dec_to_string(key_arr[j + i * COL_SIZE], &wr_buf[len], 1);
+    }
+  }
+
+  f_write( &fnew, wr_buf, len, &fnum );
+
+  f_close(&fnew);
+
+  fs_write_kbd_mat_end:
+  f_mount( NULL, "0:", 1 );   // 卸载文件系统
+}
+*/
+
+/*******************************************************************************
  * Function Name  : HAL_Fs_Read_keyboard_mat
  * Description    : 读取键盘布局
  * Input          : fp - 文件系统路径: 如"0:keyboard_mat.txt", "0:keyboard_ext_mat.txt"

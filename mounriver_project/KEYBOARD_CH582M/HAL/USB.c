@@ -194,11 +194,11 @@ const unsigned char usbd_descriptor[] = {
     0x03,                                       /*!< bDescriptorType */
     WBVAL(USBD_LANGID_STRING),                  /*!< wLangID0 */
 /********************************************** String 1 Descriptor */
-/* CL_novel */
+/* XC_novel */
     0x12,                                       /*!< bLength */
     0x03,                                       /*!< bDescriptorType */
-    0x43, 0x00,                                 /*!< 'C' wcChar0 */
-    0x4c, 0x00,                                 /*!< 'L' wcChar1 */
+    0x58, 0x00,                                 /*!< 'X' wcChar0 */
+    0x43, 0x00,                                 /*!< 'C' wcChar1 */
     0x5f, 0x00,                                 /*!< '_' wcChar2 */
     0x6e, 0x00,                                 /*!< 'n' wcChar3 */
     0x6f, 0x00,                                 /*!< 'o' wcChar4 */
@@ -206,19 +206,26 @@ const unsigned char usbd_descriptor[] = {
     0x65, 0x00,                                 /*!< 'e' wcChar6 */
     0x6c, 0x00,                                 /*!< 'l' wcChar7 */
 /********************************************** String 2 Descriptor */
-/* TP78 */
-    0x0a,                                       /*!< bLength */
+    0x1a,                                       /*!< bLength */
     0x03,                                       /*!< bDescriptorType */
-    0x54, 0x00,                                 /*!< 'T' wcChar0 */
-    0x50, 0x00,                                 /*!< 'P' wcChar1 */
-    0x37, 0x00,                                 /*!< '7' wcChar2 */
-    0x38, 0x00,                                 /*!< '8' wcChar3 */
+    0x53, 0x00,                                 /*!< 'S' wcChar0 */
+    0x74, 0x00,                                 /*!< 't' wcChar1 */
+    0x61, 0x00,                                 /*!< 'a' wcChar2 */
+    0x72, 0x00,                                 /*!< 'r' wcChar3 */
+    0x44, 0x00,                                 /*!< 'D' wcChar4 */
+    0x75, 0x00,                                 /*!< 'u' wcChar5 */
+    0x73, 0x00,                                 /*!< 's' wcChar6 */
+    0x74, 0x00,                                 /*!< 't' wcChar7 */
+    0x20, 0x00,                                 /*!< ' ' wcChar8 */
+    0x58, 0x00,                                 /*!< 'X' wcChar9 */
+    0x39, 0x00,                                 /*!< '9' wcChar10 */
+    0x39, 0x00,                                 /*!< '9' wcChar11 */
 /********************************************** String 3 Descriptor */
-/* v2.0 */
+/* v1.0 */
     0x0a,                                       /*!< bLength */
     0x03,                                       /*!< bDescriptorType */
     0x76, 0x00,                                 /*!< 'v' wcChar0 */
-    0x32, 0x00,                                 /*!< '2' wcChar1 */
+    0x31, 0x00,                                 /*!< '1' wcChar1 */
     0x2e, 0x00,                                 /*!< '.' wcChar2 */
     0x30, 0x00,                                 /*!< '0' wcChar3 */
     0x00
@@ -376,19 +383,26 @@ const unsigned char usbd_descriptor_no_msc[] = {
     0x65, 0x00,                                 /*!< 'e' wcChar6 */
     0x6c, 0x00,                                 /*!< 'l' wcChar7 */
 /********************************************** String 2 Descriptor */
-/* TP78 */
-    0x0a,                                       /*!< bLength */
+    0x1a,                                       /*!< bLength */
     0x03,                                       /*!< bDescriptorType */
-    0x54, 0x00,                                 /*!< 'T' wcChar0 */
-    0x50, 0x00,                                 /*!< 'P' wcChar1 */
-    0x37, 0x00,                                 /*!< '7' wcChar2 */
-    0x38, 0x00,                                 /*!< '8' wcChar3 */
+    0x53, 0x00,                                 /*!< 'S' wcChar0 */
+    0x74, 0x00,                                 /*!< 't' wcChar1 */
+    0x61, 0x00,                                 /*!< 'a' wcChar2 */
+    0x72, 0x00,                                 /*!< 'r' wcChar3 */
+    0x44, 0x00,                                 /*!< 'D' wcChar4 */
+    0x75, 0x00,                                 /*!< 'u' wcChar5 */
+    0x73, 0x00,                                 /*!< 's' wcChar6 */
+    0x74, 0x00,                                 /*!< 't' wcChar7 */
+    0x20, 0x00,                                 /*!< ' ' wcChar8 */
+    0x58, 0x00,                                 /*!< 'X' wcChar9 */
+    0x39, 0x00,                                 /*!< '9' wcChar10 */
+    0x39, 0x00,                                 /*!< '9' wcChar11 */
 /********************************************** String 3 Descriptor */
-/* v2.0 */
+/* v1.0 */
     0x0a,                                       /*!< bLength */
     0x03,                                       /*!< bDescriptorType */
     0x76, 0x00,                                 /*!< 'v' wcChar0 */
-    0x32, 0x00,                                 /*!< '2' wcChar1 */
+    0x31, 0x00,                                 /*!< '1' wcChar1 */
     0x2e, 0x00,                                 /*!< '.' wcChar2 */
     0x30, 0x00,                                 /*!< '0' wcChar3 */
     0x00
@@ -791,9 +805,10 @@ tmosEvents USB_ProcessEvent( tmosTaskID task_id, tmosEvents events )
   if ( events & USB_KEYBOARD_EVENT )
   {
     if (hid_state.keyboard_hid_state != HID_STATE_BUSY) {
+      hid_state.keyboard_hid_state = HID_STATE_BUSY;
       ret = usbd_ep_start_write(USBD_IF0_AL0_EP0_ADDR, HIDKeyboard, HID_KEYBOARD_DATA_LENGTH);
-      if (ret >= 0) {
-          hid_state.keyboard_hid_state = HID_STATE_BUSY;
+      if (ret < 0) {
+          hid_state.keyboard_hid_state = HID_STATE_IDLE;
       }
     }
     return events ^ USB_KEYBOARD_EVENT;
@@ -802,9 +817,10 @@ tmosEvents USB_ProcessEvent( tmosTaskID task_id, tmosEvents events )
   if ( events & USB_MOUSE_EVENT )
   {
     if (hid_state.mouse_hid_state != HID_STATE_BUSY) {
+      hid_state.mouse_hid_state = HID_STATE_BUSY;
       ret = usbd_ep_start_write(USBD_IF1_AL0_EP0_ADDR, HIDMouse, HID_MOUSE_DATA_LENGTH);
-      if (ret >= 0) {
-          hid_state.mouse_hid_state = HID_STATE_BUSY;
+      if (ret < 0) {
+          hid_state.mouse_hid_state = HID_STATE_IDLE;
       }
     }
     return events ^ USB_MOUSE_EVENT;
@@ -813,9 +829,10 @@ tmosEvents USB_ProcessEvent( tmosTaskID task_id, tmosEvents events )
   if ( events & USB_VOL_EVENT )
   {
     if (hid_state.vol_hid_state != HID_STATE_BUSY) {
+      hid_state.vol_hid_state = HID_STATE_BUSY;
       ret = usbd_ep_start_write(USBD_IF2_AL0_EP0_ADDR, HIDVolume, HID_VOLUME_DATA_LENGTH);
-      if (ret >= 0) {
-          hid_state.vol_hid_state = HID_STATE_BUSY;
+      if (ret < 0) {
+          hid_state.vol_hid_state = HID_STATE_IDLE;
       }
     }
     return events ^ USB_VOL_EVENT;

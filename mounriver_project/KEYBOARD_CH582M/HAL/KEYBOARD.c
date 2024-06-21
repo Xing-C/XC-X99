@@ -11,27 +11,38 @@
 #include "HAL.h"
 #include "snake.h"
 
-const uint32_t Row_Pin[ROW_SIZE] = {GPIO_Pin_6, GPIO_Pin_5, GPIO_Pin_3, GPIO_Pin_2, GPIO_Pin_1, GPIO_Pin_0};   //row 6 - 其它键盘布局需修改此处
-const uint32_t Colum_Pin[COL_SIZE] = {GPIO_Pin_4, GPIO_Pin_5, GPIO_Pin_6, GPIO_Pin_0, GPIO_Pin_1, GPIO_Pin_2, GPIO_Pin_3,
-                                      GPIO_Pin_15, GPIO_Pin_14, GPIO_Pin_13, GPIO_Pin_12, GPIO_Pin_11, GPIO_Pin_9, GPIO_Pin_7};   //colum 14 - 其它键盘布局需修改此处
-//row*colum = 6*14 = 84
+// #define Row_GPIO_(x)    GPIOB_
+// #define Colum_GPIO_(x)  GPIOA_
+// 顺序Row 0-8,colum 0-10
+const uint32_t Row_Pin[ROW_SIZE] = {GPIO_Pin_6, GPIO_Pin_5, GPIO_Pin_3, GPIO_Pin_2, GPIO_Pin_1, GPIO_Pin_0,
+                                    GPIO_Pin_8, GPIO_Pin_19, GPIO_Pin_18};   //row 9 - 其它键盘布局需修改此处
+const uint32_t Colum_Pin[COL_SIZE] = {GPIO_Pin_6, GPIO_Pin_7, GPIO_Pin_9, GPIO_Pin_0, GPIO_Pin_1,
+                                      GPIO_Pin_2, GPIO_Pin_3,GPIO_Pin_15, GPIO_Pin_14, GPIO_Pin_13,
+                                      GPIO_Pin_12};   //colum 11 - 其它键盘布局需修改此处
+//row*colum = 9*11 = 99
 const uint8_t KeyArrary[ROW_SIZE][COL_SIZE] = {
-          //---- COL 0 ----|-- COL 1 --|-- COL 2 --|--- COL 3 ---|--- COL 4 ---|--- COL 5 ---|- COL 6 -|--- COL 7 ---|--- COL 8 ---|--- COL 9 ---|---- COL10 ----|---- COL11 ----|---- COL12 ----|---- COL13 ----|
-/* ROW0 */{ KEY_ESCAPE,     KEY_F1,     KEY_F2,     KEY_F3,       KEY_F4,       KEY_F5,       KEY_F6,   KEY_F7,       KEY_F8,       KEY_F9,       KEY_F10,        KEY_F11,        KEY_F12,        KEY_Delete    },
-/* ROW1 */{ KEY_GraveAccent,KEY_1,      KEY_2,      KEY_3,        KEY_4,        KEY_5,        KEY_6,    KEY_7,        KEY_8,        KEY_9,        KEY_0,          KEY_Subtraction,KEY_Equal,      KEY_BACKSPACE },
-/* ROW2 */{ KEY_TAB,        KEY_Q,      KEY_W,      KEY_E,        KEY_R,        KEY_T,        KEY_Y,    KEY_U,        KEY_I,        KEY_O,        KEY_P,          KEY_LSbrackets, KEY_RSbrackets, KEY_NonUS_WS  },
-/* ROW3 */{ KEY_CapsLock,   KEY_A,      KEY_S,      KEY_D,        KEY_F,        KEY_G,        KEY_H,    KEY_J,        KEY_K,        KEY_L,        KEY_Semicolon,  KEY_Quotation,  KEY_ENTER,      KEY_PageUp    },
-/* ROW4 */{ KEY_LeftShift,  KEY_None,   KEY_Z,      KEY_X,        KEY_C,        KEY_V,        KEY_B,    KEY_N,        KEY_M,        KEY_Comma,    KEY_FullStop,   KEY_Slash,      KEY_RightShift, KEY_PageDown  },
-/* ROW5 */{ KEY_LeftCTRL,   KEY_LeftGUI,KEY_LeftAlt,KEY_SPACEBAR, KEY_SPACEBAR, KEY_RightAlt, KEY_Fn,   KEY_RightCTRL,KEY_LeftArrow,KEY_DownArrow,KEY_RightArrow, KEY_UpArrow,    KEY_End,        KEY_Home      },
-};  // 默认键盘布局 - 其它键盘布局需修改此处
+         //---- COL 0 -------|---- COL 1 -----|-- COL 2 -----|----- COL 3 -----|------ COL 4 ------|----- COL 5 ----|------- COL 6 -------|------- COL 7 -----|--- COL 8 ----|--- COL 9 -------|----- COL10 --|
+/* ROW0 */{ KEY_ESCAPE,      KEY_F1,          KEY_F2,         KEY_F3,          KEY_F4,              KEY_F5,          KEY_F6,              KEY_F7,             KEY_F8,        KEY_F9,           KEY_F10        },
+/* ROW1 */{ KEY_GraveAccent, KEY_1,           KEY_2,          KEY_3,           KEY_4,               KEY_5,           KEY_6,               KEY_7,              KEY_8,         KEY_9,            KEY_0          },
+/* ROW2 */{ KEY_TAB,         KEY_Q,           KEY_W,          KEY_E,           KEY_R,               KEY_T,           KEY_Y,               KEY_U,              KEY_I,         KEY_O,            KEY_P          },
+/* ROW3 */{ KEY_CapsLock,    KEY_A,           KEY_S,          KEY_D,           KEY_F,               KEY_G,           KEY_H,               KEY_J,              KEY_K,         KEY_L,            KEY_Semicolon  },
+/* ROW4 */{ KEY_LeftShift,   KEY_Z,           KEY_X,          KEY_C,           KEY_V,               KEY_B,           KEY_N,               KEY_M,              KEY_Comma,     KEY_FullStop,     KEY_Slash      },
+/* ROW5 */{ KEY_LeftCTRL,    KEY_LeftGUI,     KEY_LeftAlt,    KEY_SPACEBAR,    KEY_SPACEBAR,        KEY_RightAlt,    KEY_Fn,              KEY_RightCTRL,      KEY_LeftArrow, KEY_DownArrow,    KEY_RightArrow },
+/* ROW6 */{ KEY_F11,         KEY_Subtraction, KEY_LSbrackets, KEY_Quotation,   KEY_RightShift,      KEY_UpArrow,     KEY_ENTER,           KEY_RSbrackets,     KEY_Equal,     KEY_BACKSPACE,    KEY_NonUS_WS   },
+/* ROW7 */{ KEY_F12,         KEY_Delete,      KEY_NumLock,    KEY_7_AndHome,   KEY_4_AndLeftArrow,  KEY_1_AndEnd,    KEY_0_AndInsert,     KEY_2_AndDownArrow, KEY_Alpha_5,   KEY_8_AndUpArrow, KEY_Divide     },
+/* ROW8 */{ KEY_Home,        KEY_PageUp,      KEY_Asterisk,   KEY_9_AndPageUp, KEY_6_AndRightArrow, KEY_3_AndPageDn, KEY_PeriodAndDelete, KEY_NumENTER,       KEY_Plus,      KEY_Minus,        KEY_PageDown   },
+};  // 真正的矩阵键盘布局 - (长 - 方形)
 const uint8_t Extra_KeyArrary[ROW_SIZE][COL_SIZE] = {
-          //-- COL 0 --|--- COL 1 ---|--- COL 2 ---|---- COL 3 ----|--- COL 4 ---|--- COL 5 ---|- COL 6 -|- COL 7 -|- COL 8 -|- COL 9 -|---- COL10 ----|- COL11 -|- COL12 -|-- COL13 --|
-/* ROW0 */{ KEY_None,   KEY_None,     KEY_None,     KEY_None,       KEY_None,     KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_None,       KEY_None, KEY_None, KEY_None  },
-/* ROW1 */{ KEY_None,   KEY_None,     KEY_None,     KEY_None,       KEY_None,     KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_None,       KEY_None, KEY_None, KEY_None  },
-/* ROW2 */{ KEY_None,   KEY_BACKSPACE,KEY_UpArrow,  KEY_ENTER,      KEY_PageUp,   KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_PrintScreen,KEY_None, KEY_None, KEY_None  },
-/* ROW3 */{ KEY_None,   KEY_LeftArrow,KEY_DownArrow,KEY_RightArrow, KEY_PageDown, KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_None,       KEY_None, KEY_None, KEY_None  },
-/* ROW4 */{ KEY_None,   KEY_None,     KEY_None,     KEY_None,       KEY_Home,     KEY_End,      KEY_None, KEY_None, KEY_None, KEY_None, KEY_None,       KEY_None, KEY_None, KEY_None  },
-/* ROW5 */{ KEY_None,   KEY_None,     KEY_None,     KEY_MouseL,     KEY_MouseR,   KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_None,       KEY_None, KEY_None, KEY_None  },
+         //-- COL 0 --|--- COL 1 -----|--- COL 2 ---|---- COL 3 ----|--- COL 4 ---|--- COL 5 ---|- COL 6 -|- COL 7 -|- COL 8 -|- COL 9 -|---- COL10 ----|
+/* ROW0 */{ KEY_None,   KEY_None,      KEY_None,     KEY_None,       KEY_None,     KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_None        },
+/* ROW1 */{ KEY_None,   KEY_None,      KEY_None,     KEY_None,       KEY_None,     KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_None        },
+/* ROW2 */{ KEY_None,   KEY_BACKSPACE, KEY_UpArrow,  KEY_ENTER,      KEY_PageUp,   KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_PrintScreen },
+/* ROW3 */{ KEY_None,   KEY_LeftArrow, KEY_DownArrow,KEY_RightArrow, KEY_PageDown, KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_None        },
+/* ROW4 */{ KEY_None,   KEY_None,      KEY_None,     KEY_None,       KEY_Home,     KEY_End,      KEY_None, KEY_None, KEY_None, KEY_None, KEY_None        },
+/* ROW5 */{ KEY_None,   KEY_None,      KEY_None,     KEY_MouseL,     KEY_MouseR,   KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_None        },
+/* ROW6 */{ KEY_None,   KEY_None,      KEY_None,     KEY_None,       KEY_None,     KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_None        },
+/* ROW7 */{ KEY_None,   KEY_None,      KEY_None,     KEY_None,       KEY_None,     KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_None        },
+/* ROW8 */{ KEY_None,   KEY_None,      KEY_None,     KEY_None,       KEY_None,     KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_None        },
 };  // 额外默认键盘布局 - 其它键盘布局需修改此处
 const uint8_t SP_KeyArrary[][8] = {
         { 0x5,      0x0,      KEY_Delete,       0x0,      0x0,      0x0,      0x0,      0x0 }, //1 - Ctrl+Alt+Del
@@ -43,12 +54,15 @@ const uint8_t SP_KeyArrary[][8] = {
         { 0x9,      0x0,      KEY_RightArrow,   0x0,      0x0,      0x0,      0x0,      0x0 }, //7 - GUI+Ctrl+Right
 };  // SP按键默认映射
 const uint8_t Key_To_LEDNumber[ROW_SIZE][COL_SIZE] = {
-/* ROW0 */{ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13 },
-/* ROW1 */{ 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27 },
-/* ROW2 */{ 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41 },
-/* ROW3 */{ 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55 },
-/* ROW4 */{ 56, 255,57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68 },
-/* ROW5 */{ 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82 },
+/* ROW0 */{ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10 },
+/* ROW1 */{ 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27 },
+/* ROW2 */{ 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45 },
+/* ROW3 */{ 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63 },
+/* ROW4 */{ 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79 },
+/* ROW5 */{ 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96 },
+/* ROW6 */{ 11, 28, 46, 64, 80, 81, 65, 47, 29, 30, 48 },
+/* ROW7 */{ 12, 13, 31, 49, 66, 82, 97, 83, 67, 50, 32 },
+/* ROW8 */{ 14, 15, 33, 51, 68, 84, 98, 85, 52, 34, 16 },
 };  // 矩阵键盘位置转LED编号
 uint32_t Row_Pin_ALL = 0, Colum_Pin_ALL = 0;
 uint8_t CustomKey[ROW_SIZE][COL_SIZE];  //自定义按键层
@@ -72,6 +86,7 @@ void DATAFLASH_Read_KeyArray( void )
 {
   HAL_Fs_Read_keyboard_mat("0:keyboard_mat.txt", (uint8_t*)CustomKey);
   HAL_Fs_Read_keyboard_mat("0:keyboard_ext_mat.txt", (uint8_t*)Extra_CustomKey);
+  //memcpy(CustomKey, KeyArrary, COL_SIZE*ROW_SIZE);
 }
 
 /*******************************************************************************
@@ -82,6 +97,7 @@ void DATAFLASH_Read_KeyArray( void )
  *******************************************************************************/
 void DATAFLASH_Write_KeyArray( void )
 {
+  // HAL_Fs_Reset_keyboard_matrix();
   HAL_Fs_Write_keyboard_mat("0:keyboard_mat.txt", (const uint8_t*)CustomKey);
   HAL_Fs_Write_keyboard_mat("0:keyboard_ext_mat.txt", (const uint8_t*)Extra_CustomKey);
 }
@@ -148,6 +164,24 @@ UINT8 KEYBOARD_Custom_Function( void )
   if ( g_keyboard_status.Fn == TRUE && KeyboardDat->Key2 == KEY_None ) { // 按下Fn+1个键或者只有Fn键
     last_state = 1;
     press_time = sys_time;
+/*    if ( KeyboardDat->Key1 == KEY_None  ) {
+      Fn_Mode = Fn_Mode_UDiskMode;
+      Fn_cnt = 0;*/
+/*
+            #if (defined HAL_WDG) && (HAL_WDG == TRUE)
+                      WWDG_ResetCfg(DISABLE); // 关看门狗
+            #endif
+                      KEYBOARD_Reset( );
+            #if (defined HAL_WDG) && (HAL_WDG == TRUE)
+                      WWDG_ResetCfg(ENABLE);  // 开看门狗
+            #endif
+                      Fn_Mode = Fn_Mode_None;
+                      uint16_t Usb_mode = 0;
+                      uint16_t Udisk_mode = 1;
+                      HAL_Fs_Write_keyboard_cfg(FS_LINE_WORK_MODE, 1, &Usb_mode);
+                      HAL_Fs_Write_keyboard_cfg(FS_LINE_UDISK_MODE, 1, &Udisk_mode);
+                      SoftReset();
+        }*/
     if ( KeyboardDat->Key1 == KEY_None && Fn_Mode == Fn_Mode_None ) { // 键盘布局复位
       Fn_Mode = Fn_Mode_Reset;
       Fn_cnt &= 0xF0;   // 清除其余计数器
@@ -304,10 +338,10 @@ UINT8 KEYBOARD_Custom_Function( void )
         break;
       }
       case Fn_Mode_RFJumptoBoot: {  // Fn+ESC发送0x7A让接收器进BOOT
-        Fn_Mode = Fn_Mode_None;
+/*        Fn_Mode = Fn_Mode_None;
         if (g_Enable_Status.rf == TRUE) {
           tmos_set_event( RFTaskId, SBP_RF_JUMPBOOT_REPORT_EVT );  // RF JUMPBOOT事件
-        }
+        }*/ // 暂时禁用 修改
         break;
       }
       case Fn_Mode_JumpBoot: {  // Fn+B跳转kboot
@@ -329,6 +363,7 @@ UINT8 KEYBOARD_Custom_Function( void )
         break;
       }
       case Fn_Mode_PaintedEgg: {  // Fn+Delete彩蛋
+        break;
         Fn_Mode = Fn_Mode_None;
         if (g_Enable_Status.paintedegg == FALSE) {
           g_keyboard_status.changeBL = TRUE;
@@ -629,7 +664,7 @@ void KEYBOARD_Detection( void )
           return;
       } else if (Touchbar_SP_Key) {
           if (--Touchbar_SP_Key == 0) {  // 触摸条SP键的持续时间到达
-              memset(KeyboardDat->data, 0, 8);
+              memset(KeyboardDat->data, 0, HID_KEYBOARD_DATA_LENGTH);
               KEYBOARD_data_index = 2;
               g_Ready_Status.keyboard_key_data = TRUE;  // 产生事件
           }
@@ -660,10 +695,15 @@ void KEYBOARD_Detection( void )
             if (g_keyboard_status.SP_Key != 0) continue;  // SP键生效后不接受其余按键
             else if (KEYBOARD_data_index >= HID_KEYBOARD_DATA_LENGTH && KeyArr_Ptr[current_row][current_colum] < KEY_LeftCTRL && KeyArr_Ptr[current_row][current_colum] > KEY_None) continue;    // 超过6个普通按键上限
             KeyMatrix[current_row][current_colum] = 1;  // 矩阵状态变成按下
-            if (led_style_func == WS2812_Style_Touch && Key_To_LEDNumber[current_row][current_colum] != 0xFF) { // 触控呼吸灯模式
-                LED_BYTE_Buffer[Key_To_LEDNumber[current_row][current_colum]][0] =
-                LED_BYTE_Buffer[Key_To_LEDNumber[current_row][current_colum]][1] =
-                LED_BYTE_Buffer[Key_To_LEDNumber[current_row][current_colum]][2] = g_LED_brightness;
+            if (led_style_func != WS2812_Style_Off && Key_To_LEDNumber[current_row][current_colum] != 0xFF) { // 触控呼吸灯模式
+
+              uint8_t led_number = Key_To_LEDNumber[current_row][current_colum];
+              HW_I2C_SendLEDNumber(led_number);
+
+              // 修改
+              //                LED_BYTE_Buffer[Key_To_LEDNumber[current_row][current_colum]][0] =
+              //                LED_BYTE_Buffer[Key_To_LEDNumber[current_row][current_colum]][1] =
+              //                LED_BYTE_Buffer[Key_To_LEDNumber[current_row][current_colum]][2] = g_LED_brightness;
             }
             g_Ready_Status.keyboard_key_data = TRUE; // 产生事件
 
@@ -677,9 +717,9 @@ void KEYBOARD_Detection( void )
             } else if (KeyArr_Ptr[current_row][current_colum] == KEY_Fn) {  // 功能键
                 g_keyboard_status.Fn = TRUE;
             } else if (KeyArr_Ptr[current_row][current_colum] >= KEY_SP_1) {  // SP键(单键复合)
-                g_keyboard_status.SP_Key = KeyArr_Ptr[current_row][current_colum] - KEY_SP_1;
+                g_keyboard_status.SP_Key = KeyArr_Ptr[current_row][current_colum] - KEY_SP_1 + 1;
                 press_Normal_Key = TRUE;
-                memcpy(KeyboardDat->data, SP_Key_Map[g_keyboard_status.SP_Key], 8);
+                memcpy(KeyboardDat->data, SP_Key_Map[g_keyboard_status.SP_Key - 1], 8);
             } else if (KeyArr_Ptr[current_row][current_colum] >= KEY_MouseL) {    // 鼠标操作
                 MouseDat->data[0] |= 1 << KeyArr_Ptr[current_row][current_colum] - KEY_MouseL;
                 press_Normal_Key = TRUE;
@@ -690,8 +730,9 @@ void KEYBOARD_Detection( void )
             } else {
                 press_Normal_Key = TRUE;
                 if (CustomKey[current_row][current_colum] == KEY_CapsLock ) {  // CapsLock处理
-                    KeyArr_Ptr = Extra_CustomKey;
-                    g_capslock_status.press_Capslock = TRUE;
+                  // 注释掉以下与 Layer 1 相关的代码行
+                  // KeyArr_Ptr = Extra_CustomKey;
+                  // g_capslock_status.press_Capslock = TRUE;
                 } else {
                     for (key_idx = 2; key_idx < KEYBOARD_data_index; key_idx++) {
                         if (KeyboardDat->data[key_idx] == KeyArr_Ptr[current_row][current_colum])
@@ -713,8 +754,9 @@ void KEYBOARD_Detection( void )
                 g_keyboard_status.Fn = FALSE;
             } else if (KeyArr_Ptr[current_row][current_colum] >= KEY_SP_1) {  // SP键(单键复合)
                 g_keyboard_status.SP_Key = 0;
-                memset(KeyboardDat->data, HID_KEYBOARD_DATA_LENGTH, 0);
-            }  else if (KeyArr_Ptr[current_row][current_colum] >= KEY_MouseL) {    // 鼠标操作
+                memset(KeyboardDat->data, 0, HID_KEYBOARD_DATA_LENGTH);
+                KEYBOARD_data_index = 2;
+            } else if (KeyArr_Ptr[current_row][current_colum] >= KEY_MouseL) {    // 鼠标操作
                 MouseDat->data[0] &= ~(1 << KeyArr_Ptr[current_row][current_colum] - KEY_MouseL);
                 g_Ready_Status.keyboard_mouse_data = TRUE;  // 产生鼠标事件
             } else if (KeyArr_Ptr[current_row][current_colum] >= KEY_LeftCTRL) {    // Ctrl等特殊键
@@ -725,6 +767,12 @@ void KEYBOARD_Detection( void )
                   g_capslock_status.press_Capslock = FALSE;
                   if (g_capslock_status.press_Capslock_with_other) { // 有使用其他层
                     g_capslock_status.press_Capslock_NormalKey = FALSE;
+                    if (g_keyboard_status.SP_Key) { // 有使用SP键
+                      g_keyboard_status.SP_Key = 0;
+                      memset(KeyboardDat->data, 0, HID_KEYBOARD_DATA_LENGTH);
+                      KEYBOARD_data_index = 2;
+                      break;
+                    }
                   } else { // 单纯按下capslock键
                       KeyboardDat->data[KEYBOARD_data_index++] = KEY_CapsLock;
                       g_capslock_status.press_Capslock_NormalKey = TRUE;
@@ -732,15 +780,21 @@ void KEYBOARD_Detection( void )
                   g_capslock_status.press_Capslock_with_other = FALSE;
                 } else {
                     uint8_t p = 2;  // 双指针实现删除按键
+                    uint8_t tmp_key;
                     for (key_idx = 2; key_idx < 8; key_idx++) {
                         if (KeyboardDat->data[key_idx] != KEY_None) {
-                          if ((KeyboardDat->data[key_idx] != CustomKey[current_row][current_colum] &&
-                              KeyboardDat->data[key_idx] != Extra_CustomKey[current_row][current_colum])) {  // 弹起按键2层都清除
-                              KeyboardDat->data[p] = KeyboardDat->data[key_idx];
-                              p++;
-                          } else {
-                              KeyboardDat->data[key_idx] = KEY_None;
-                          }
+                          // 注释掉以下与 Layer 1 相关的条件判断
+                          // if ((KeyboardDat->data[key_idx] != CustomKey[current_row][current_colum] &&
+                          //     KeyboardDat->data[key_idx] != Extra_CustomKey[current_row][current_colum])) {  // 弹起按键2层都清除
+                          if (KeyboardDat->data[key_idx] != CustomKey[current_row][current_colum]) {  // 弹起按键仅清除主布局（Layer 0）
+                            tmp_key = KeyboardDat->data[key_idx];
+                            KeyboardDat->data[key_idx] = KEY_None;
+                            KeyboardDat->data[p] = tmp_key;
+                            p++;
+
+                        } else {
+                            KeyboardDat->data[key_idx] = KEY_None;
+                        }
                         }
                     }
                     KEYBOARD_data_index = p;
