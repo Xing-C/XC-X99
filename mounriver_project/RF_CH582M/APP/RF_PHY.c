@@ -213,7 +213,7 @@ void RF_Init(void)
 
     tmos_memset(&rfConfig, 0, sizeof(rfConfig_t));
     RFtaskID = TMOS_ProcessEventRegister(RF_ProcessEvent);
-    rfConfig.accessAddress = 0x71764129; // 禁止使用0x55555555以及0xAAAAAAAA ( 建议不超过24次位反转，且不超过连续的6个0或1 )
+    rfConfig.accessAddress = 0x61764129; // 禁止使用0x55555555以及0xAAAAAAAA ( 建议不超过24次位反转，且不超过连续的6个0或1 ) // XC 修改地址，避免连接到TP78.
     rfConfig.CRCInit = 0x555555;
     rfConfig.Channel = 8;
     rfConfig.Frequency = 2405000;

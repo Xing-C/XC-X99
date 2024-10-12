@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//HAL/OLEDFONT.c=GBK
+encoding//HAL/include/BLE.h=GBK
 encoding//HAL/include/HW_I2C.h=GBK
 encoding//LIB/CH58xBLE_ROM.h=GBK
 encoding//Ld/Link.ld=GBK
