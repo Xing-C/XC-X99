@@ -1,14 +1,20 @@
 <p align="center"><img src="resources/logo.png" alt="MarkText" width="120" height="120"></p>
 
 <h1 align="center">星尘 X99 ，修改自 TrackPoint78</h1> 
-<h1 align="center">更新至分支：8f7c254c7e31376c70a3c8de16ff1ef81c270282 。以下是原版介绍。 </h1> 
+<h1 align="center">更新至分支："2f6d66e55725e31d72f9f15e7cdf8f2bd4d614b2" 。以下是原版介绍。 </h1> 
+<h1 align="center">TrackPoint78 </h1>
+
 <h5 align="center">基于CH582M的小红点三模机械键盘方案</h5>
+
+<div align="center">
+<a href="./README.md">简体中文</a> <a href="./README-EN.md">English</a>
+</div>
 
 TP78是基于CH582M的三模机械键盘方案。以满足带有小红点 便携 无线 自定义快捷键四大根本需求为出发点设计的退烧键盘。基于CH582M三模75%配列，带有小红点(指点杆)，并使用TouchBar实现鼠标左中右键。OLED、Hub和磁吸接口。外壳可使用拓竹A1mini打印拼装。**（注意开源协议，GPL3.0，请尊重开源，欢迎交流，交流群：678606780）**
 
 ![TP78](resources/TP78V2.jpg)V2.0 ：视频展示：[【软软核】为自己做一把小红点三模键盘\_哔哩哔哩\_bilibili](https://www.bilibili.com/video/BV1Ho4y1b78t/)
 
-![TP78 3D print By A1mini](resources/TP78V2.13D_By_A1mini.jpg)
+![TP78 3D print By A1mini](resources/TP78_attribute.png)
 
 V2.1：视频展示： [TP78指点杆三模键盘-Gasket版出炉啦 (速来拼车)_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1fA4m1V7DX/)
 
@@ -33,11 +39,17 @@ bilibili：@i丶m皮皮 @阿炜阿阿炜阿
 
 抖音：@i丶m皮皮
 
-### 拼车链接（目前仅支持中国大陆 - 限量）
+### 拼车链接
 
-[1. 哔哩哔哩工房 (bilibili.com)](https://gf.bilibili.com/item/detail/1105095069?noTitleBar=1&from=mall-up_itemDetail&msource=items_share)
+[淘宝(taobao.com)](https://item.taobao.com/item.htm?id=765881659540)
 
-[2. 淘宝(taobao.com)](https://item.taobao.com/item.htm?id=765881659540)
+### TP78支持的扩展模块列表
+
+1. TP78foc —— 一个FOC控制无刷电机旋钮小键盘扩展模块
+
+2. TP78mini —— 一个三模数字小键盘模块
+
+扩展模块介绍视频：[【开源】历时3年，打造一个模块化力反馈旋钮小键盘](https://www.bilibili.com/video/BV1jVpneNEpq/)
 
 ### 模型开源地址
 
@@ -93,7 +105,7 @@ https://github.com/ChnMasterOG/tp78_v2/blob/main/documents/TP78v2指导文档.pd
 | M2×2×3 滚花螺母         | M2×2×3     | 14  |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | M2×18 销柱            | M2×18      | 3   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | 键盘定位板硅胶             | 5×8，2.8×12 | 12  | https://item.taobao.com/item.htm?_u=q2jjkhi69cd7&id=744647593898&spm=a1z09.2.0.0.af932e8d0BlsxD&sku_properties=1627207:107121                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| NGFF M.2 铜柱-1.5H M3 | 1.5H M3    | 1   | https://item.taobao.com/item.htm?app=chrome&bxsign=scdEkAVMVexd7f8Q7UzuApXa4j1r_JD9G4td5HaaWVChIkPjmiw1mdLib_8g4SRe2vWDNuoFUCKcu-ejr9A1uJwoDsc538qN83wsPZPpYKL7QjkTn9bV8RsvlvkjlMOVoLH&cpp=1&id=618677416528&price=0.26-0.8&shareUniqueId=25308625613&share_crt_v=1&shareurl=true&short_name=h.5rLwYPpOifZrW9B&skuId=4836714229115&sourceType=itemitem&sp_abtk=gray_1_code_simpleAndroid2&sp_tk=VG1oMFdSQ2NvUkM=&spm=a2159r.13376460.0.0&suid=95bb0d99-7ae4-428d-8994-c13b7072fe1e&tbSocialPopKey=shareItem&tk=Tmh0WRCcoRC&un=a40571f7eec624d4b0ea5e6b515c0e5c&un_site=0&ut_sk=1.YDpH0Uzm8dUDAG5lU8oOTXSt_21646297_1706280814125.Copy.1 |
+| NGFF M.2 铜柱-1.5H M3 | 1.5H M3    | 1   | https://item.taobao.com/item.htm?app=chrome&bxsign=scdEkAVMVexd7f8Q7UzuApXa4j1r_JD9G4td5HaaWVChIkPjmiw1mdLib_8g4SRe2vWDNuoFUCKcu-ejr9A1uJwoDsc538qN83wsPZPpYKL7QjkTn9bV8RsvlvkjlMOVoLH&cpp=1&id=618677416528&price=0.26-0.8&shareUniqueId=25308625613&share_crt_v=1&shareurl=true&short_name=h.5rLwYPpOifZrW9B&skuId=4836714229115&sourceType=item,item&sp_abtk=gray_1_code_simpleAndroid2&sp_tk=VG1oMFdSQ2NvUkM=&spm=a2159r.13376460.0.0&suid=95bb0d99-7ae4-428d-8994-c13b7072fe1e&tbSocialPopKey=shareItem&tk=Tmh0WRCcoRC&un=a40571f7eec624d4b0ea5e6b515c0e5c&un_site=0&ut_sk=1.YDpH0Uzm8dUDAG5lU8oOTXSt_21646297_1706280814125.Copy.1 |
 | M3*4 螺丝（M.2固定用）     | M3×4       | 1   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | 接收器外壳               |            | 1   | https://item.taobao.com/item.htm?_u=q1p8ioog4b10&id=534100629624&spm=a1z09.2.0.0.ffb12e8doHDWhm                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
@@ -208,3 +220,47 @@ C(mounriver_project - wch软件工程) --> J(VLD_CH582M - 主控板测试工程)
         1. 修复SP键无法正常工作的BUG
 
         2. 增加小红点读取数据期间禁用中断
+
+- V2.0.15
+
+        1. 修改按键弹起逻辑，避免出现重复键码
+
+        2. 优化USB HID信息发送状态的判断
+
+- V2.1.1
+
+        1. 【代码逻辑优化和稳定性】优化按键按下时 HID 编码逻辑，更新 I2C 驱动
+
+        2. 【SDK 更新】更新 WCH SDK 至 2024 年 1 月版本
+
+        3. **【优化 2.4G 连接】更新版本后 RF 模式下 Numlock 状态会被显示在 OLED，当信号不好出现丢包后键盘会自动发起重传，默认发起重传时间为 10ms，可以通过 RF_chk_ms 参数修改时间，该功能需要同步升级接收器固件后才能生效**
+
+        4. 【扩展模块协议】适配 miniFOC 和 TP78mini 扩展模块
+
+        5. 【低功耗相关】低功耗相关代码更新
+
+- V2.1.2
+
+        1. 支持VIA修改按键宏功能（保持U盘模式修改，保持M6和M7为触摸条左右按键宏功能）
+
+- V2.1.3
+
+        1. 取消触摸条左中右按键振动，修复小红点和触摸条联合使用会造成小红点无法移动的
+
+BUG
+
+        2. 优化扩展模块连接稳定性
+
+        3. 修改 USB/BLE/RF 的连接描述符配置，新增旋钮配置。更新版本后需要同步升级接收
+
+器固件
+
+        4. 更新文档，增加VIA改键说明、U盘改键说明和OLED图标描述
+
+- V2.1.4
+
+        1. 修复BUG：单独使用Capslock+空格模拟鼠标左右键异常（[Issue #3](https://github.com/ChnMasterOG/tp78_v2/issues/3)）
+
+- V2.1.5
+
+        1. 修改触摸条按键/滑动触发振动的功能为可配置（配置项：motor_en）

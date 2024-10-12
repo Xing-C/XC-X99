@@ -12,8 +12,9 @@
 
 __attribute__((aligned(4))) UINT32 LED_DMA_Buffer[LED_NUMBER*24 + RESET_FRAME_SIZE] = { TIMING_RESET };  // LED的PWM脉冲翻转计数值缓冲区
 UINT8 LED_BYTE_Buffer[LED_NUMBER][3] = { 0 };
-WS2812_Style_Func led_style_func = WS2812_Style_Normal;  // 默认背光函数
+WS2812_Style_Func led_style_func = WS2812_Style_Off;  // 默认背光函数
 uint8_t g_LED_brightness = LED_DEFAULT_BRIGHTNESS;
+WS2812_Style_Func g_record_last_LED_style = WS2812_Style_Off;
 static uint8_t style_dir = 0;
 static uint32_t style_cnt = 0;
 
@@ -53,6 +54,7 @@ uint8_t DATAFLASH_Read_LEDStyle( void )
       LED_Style_Number = 0;
       break;
   }
+  g_record_last_LED_style = led_style_func;
   return LED_Style_Number;
 }
 
@@ -83,7 +85,8 @@ void WS2812_PWM_Init( void )
   WS2812_GPIO_(ModeCfg)( WS2812_Pin, GPIO_ModeOut_PP_5mA );
 
 #if 0 // DMA搬运前重新初始化
-  TMR1_PWMInit( High_Level, PWM_Times_1 );
+//  TMR1_PWMInit( High_Level, PWM_Times_1 );  -旧sdk
+  R8_TMR1_CTRL_MOD = RB_TMR_COUNT_EN | RB_TMR_OUT_EN | (High_Level << 4) | (PWM_Times_1 << 6);
   TMR1_PWMCycleCfg( 75 );        // 周期 1.25us
 #endif
 
@@ -185,6 +188,10 @@ void WS2812_Style_Breath( void )
   }
   if (LED_BYTE_Buffer[0][GREEN_INDEX] == g_LED_brightness || LED_BYTE_Buffer[0][GREEN_INDEX] == 0 ) {
     style_dir = !style_dir;
+#if (defined HAL_TPM) && (HAL_TPM == TRUE) && (defined HAL_HW_I2C) && (HAL_HW_I2C == TRUE)
+    if (!style_dir)
+      TPM_notify_backlight_ready();
+#endif
   }
 }
 
@@ -225,6 +232,9 @@ void WS2812_Style_Waterful( void )
   ++style_cnt;
   if (style_cnt >= LED_NUMBER * 3 * Waterful_Repeat_Times ) { // GRB轮流切换 + 120ms移动一个灯
     style_cnt = 0;
+#if (defined HAL_TPM) && (HAL_TPM == TRUE) && (defined HAL_HW_I2C) && (HAL_HW_I2C == TRUE)
+    TPM_notify_backlight_ready();
+#endif
   }
 }
 
@@ -324,7 +334,13 @@ void WS2812_Style_Rainbow( void )
   } else {  // 从右向左
     --style_cnt;
   }
-  if (style_cnt == 42 || style_cnt == 0) style_dir = !style_dir;
+  if (style_cnt == 42 || style_cnt == 0) {
+    style_dir = !style_dir;
+#if (defined HAL_TPM) && (HAL_TPM == TRUE) && (defined HAL_HW_I2C) && (HAL_HW_I2C == TRUE)
+    if (!style_dir)
+      TPM_notify_backlight_ready();
+#endif
+  }
 }
 
 /*******************************************************************************
@@ -380,10 +396,93 @@ void WS2812_Send( void )
   }
 
   { // WCH CH582M bug: 不重新初始化TMR_PWM则发送PWM+DMA偶现第一个非空Byte丢失
-    TMR1_PWMInit( High_Level, PWM_Times_1 );
+//    TMR1_PWMInit( High_Level, PWM_Times_1 );  -旧sdk
+    R8_TMR1_CTRL_MOD = RB_TMR_COUNT_EN | RB_TMR_OUT_EN | (High_Level << 4) | (PWM_Times_1 << 6);
     TMR1_PWMCycleCfg( 75 );        // 周期 1.25us
   }
   TMR1_DMACfg( ENABLE, (UINT16) (UINT32) LED_DMA_Buffer, (UINT16) (UINT32) (LED_DMA_Buffer + LED_NUMBER*24 + RESET_FRAME_SIZE), Mode_Single );  // 启用DMA转换，从内存到外设
-
 }
 
+/*************************************** Port For Lamp ***************************************/
+#define LAMPARRAY_KIND 1
+static uint16_t current_lamp_id = 0;
+
+uint16_t GetLampArrayAttributesReport(uint8_t* buffer)
+{
+    LampArrayAttributesReport report = {
+        .lampCount = LED_NUMBER,
+        .width = LIGHTMAP_WIDTH,
+        .height = LIGHTMAP_HEIGHT,
+        .depth = LIGHTMAP_DEPTH,
+        .lampArrayKind = LAMPARRAY_KIND,
+        .minUpdateInterval = LIGHTMAP_UPDATE_INTERVAL,
+    };
+
+    memcpy(buffer, &report, sizeof(LampArrayAttributesReport));
+
+    return sizeof(LampArrayAttributesReport);
+}
+
+uint16_t GetLampAttributesReport(uint8_t* buffer)
+{
+    LampAttributesResponseReport report = {
+        .lampId = current_lamp_id,                              // LampId
+        .lampPosition = LampPositions[current_lamp_id],         // Lamp position
+        .updateLatency = LIGHTMAP_UPDATE_INTERVAL,              // Lamp update interval
+        LAMP_PURPOSE_CONTROL,                                   // Lamp purpose
+        255,                                                    // Red level count
+        255,                                                    // Blue level count
+        255,                                                    // Green level count
+        1,                                                      // Intensity
+        1,                                                      // Is Programmable
+        KEYPAD_NumLock,                                         // InputBinding
+    };
+
+    memcpy(buffer, &report, sizeof(LampAttributesResponseReport));
+    current_lamp_id = current_lamp_id + 1 >= LED_NUMBER ? current_lamp_id : current_lamp_id + 1;
+
+    return sizeof(LampAttributesResponseReport);
+}
+
+void SetLampAttributesId(const uint8_t* buffer)
+{
+    LampAttributesRequestReport* report = (LampAttributesRequestReport*) buffer;
+    current_lamp_id = report->lampId;
+}
+
+void SetMultipleLamps(const uint8_t* buffer)
+{
+    int i;
+    LampMultiUpdateReport* report = (LampMultiUpdateReport*) buffer;
+
+    for (i = 0; i < report->lampCount; i++) {
+        LED_BYTE_Buffer[report->lampIds[i]][RED_INDEX] = report->colors[i].red;
+        LED_BYTE_Buffer[report->lampIds[i]][GREEN_INDEX] = report->colors[i].green;
+        LED_BYTE_Buffer[report->lampIds[i]][BLUE_INDEX] = report->colors[i].blue;
+    }
+}
+
+void SetLampRange(const uint8_t* buffer)
+{
+    int i;
+    LampRangeUpdateReport* report = (LampRangeUpdateReport*) buffer;
+
+    for (i = report->lampIdStart; i <= report->lampIdEnd && i < LED_NUMBER; i++) {
+        LED_BYTE_Buffer[i][RED_INDEX] = report->color.red;
+        LED_BYTE_Buffer[i][GREEN_INDEX] = report->color.green;
+        LED_BYTE_Buffer[i][BLUE_INDEX] = report->color.blue;
+    }
+}
+
+void SetAutonomousMode(const uint8_t* buffer)
+{
+    LampArrayControlReport* report = (LampArrayControlReport*) buffer;
+    if (report->autonomousMode) {
+        led_style_func = g_record_last_LED_style;
+        g_keyboard_status.changeBL = TRUE;
+    } else {
+        g_record_last_LED_style = led_style_func;
+        g_keyboard_status.changeBL = TRUE;
+        led_style_func = WS2812_Style_Custom;
+    }
+}

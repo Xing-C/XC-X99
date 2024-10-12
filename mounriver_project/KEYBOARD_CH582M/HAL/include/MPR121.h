@@ -14,8 +14,8 @@
   #include "HAL.h"
 
   /* MPR121 GPIO configurations */
-  #define MPRINT_Pin            GPIO_Pin_4    // MPR121 INT 从 PB18改到PA4
-  #define MPRINT_GPIO_(x)       GPIOA_ ## x   // MPR121 IO
+  #define MPRINT_Pin            GPIO_Pin_4    // MPR121 INT 从 PB18改到PA4// XC
+  #define MPRINT_GPIO_(x)       GPIOA_ ## x   // MPR121 IO // XC
 
   /* MPR121 I2C interfaces */
   #define MPR121_WriteReg(reg, dat)           HW_I2C_WR_Reg(reg, dat, MPR121_ADDR)

@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <projectDescription>
-	<name>BLE_CH582M-re</name>
-	<comment></comment>
+	<name>BLE_CH582M</name>
+	<comment/>
 	<projects>
 	</projects>
 	<buildSpec>
@@ -26,7 +26,7 @@
 	<filteredResources>
 		<filter>
 			<id>1602468250279</id>
-			<name></name>
+			<name/>
 			<type>22</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>

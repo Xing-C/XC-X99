@@ -31,6 +31,7 @@ void APPJumpKBoot(void)
  * Input          : 无
  * Return         : 无
  *******************************************************************************/
+#ifndef LOW_MEM
 __HIGH_CODE
 void APPJumpBoot(void)   //此段代码必须运行在RAM中
 {
@@ -53,6 +54,7 @@ void APPJumpBoot(void)   //此段代码必须运行在RAM中
   R8_SAFE_ACCESS_SIG = 0;//进入后执行复位，复位类型为上电复位
   while(1);//营造空片的现象，启动时就会停在BOOT，等烧写，超时时间10s
 }
+#endif
 
 /*******************************************************************************
  * Function Name  : SoftReset
@@ -149,6 +151,7 @@ void TP78Reinit(uint8_t mode, enum LP_Type lp_type)
     WWDG_ResetCfg(DISABLE); // 关看门狗
 #endif
 #ifdef HAL_WS2812_PWM
+    g_record_last_LED_style = led_style_func;
     led_style_func = WS2812_Style_Off; g_keyboard_status.changeBL = TRUE; WS2812_Send(); // WS2812 OFF
 #endif
 #if (defined HAL_OLED) && (HAL_OLED == TRUE)
@@ -190,7 +193,7 @@ void TP78Reinit(uint8_t mode, enum LP_Type lp_type)
   } else {  // 唤醒键盘
     if (lp_type != lp_shutdown_mode) { // 恢复现场
 #if (defined HAL_WS2812_PWM)
-      DATAFLASH_Read_LEDStyle();  // WS2812
+      led_style_func = g_record_last_LED_style; g_keyboard_status.changeBL = TRUE;
 #endif
 #if (defined HAL_HW_I2C) && (HAL_HW_I2C == TRUE)
 #if (defined HAL_I2C_TP) && (HAL_I2C_TP == TRUE)
@@ -241,6 +244,7 @@ void GotoLowpower(enum LP_Type type)
       LowPower_Idle();
       break;
     case lp_sw_mode: // 软件低功耗处理
+    case lp_no_sleep_mode:
       TP78Reinit(0, type);
       break;
     case lp_halt_mode: // 暂停模式 - 320uA
@@ -260,7 +264,6 @@ void GotoLowpower(enum LP_Type type)
     default:  // do not run here
       return;
   }
-  g_Enable_Status.sleep = TRUE;
 #else
   return;
 #endif

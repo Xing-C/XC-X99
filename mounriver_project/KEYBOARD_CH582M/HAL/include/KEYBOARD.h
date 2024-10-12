@@ -16,8 +16,8 @@
     #define Row_GPIO_(x)    GPIOB_ ## x
     #define Colum_GPIO_(x)  GPIOA_ ## x
 
-    #define ROW_SIZE        9    // 键盘行数 - 其它键盘布局需修改此处
-    #define COL_SIZE        11   // 键盘列数 - 其它键盘布局需修改此处
+    #define ROW_SIZE        9    // 键盘行数 - 其它键盘布局需修改此处 // XC
+    #define COL_SIZE        11   // 键盘列数 - 其它键盘布局需修改此处 // XC
 
     #define MAX_PRESS_COUNT       15    // 8个特殊键+6个一般键+1个Fn键
     #define MAX_CHANGETIMES       24    // 按下Capslock改变键盘布局检测次数
@@ -87,7 +87,7 @@
     #define KEY_0_AndInsert      0x62
     #define KEY_PeriodAndDelete  0x63 // . 小数点
     #define KEY_NumENTER         0x58 // 小键盘回车键 -上方添加右侧小键盘按键
-    #define KEY_ENTER       0x28    //大回车键
+    #define KEY_ENTER       0x28    //大回车键 // XC
     #define KEY_ESCAPE      0x29
     #define KEY_BACKSPACE   0x2A
     #define KEY_TAB         0x2B
@@ -131,6 +131,8 @@
     #define KEY_LeftArrow   0x50    //←
     #define KEY_DownArrow   0x51    //↓
     #define KEY_UpArrow     0x52    //↑
+
+    #define KEYPAD_NumLock  0x53
 
     //特殊
     #define KEY_Undo        0x7A
@@ -210,11 +212,12 @@
 
     extern const uint8_t KeyArrary[ROW_SIZE][COL_SIZE];
     extern const uint8_t Extra_KeyArrary[ROW_SIZE][COL_SIZE];
+    extern const uint8_t SP_KeyArrary[SP_KEY_NUMBER][8];
     extern uint32_t Row_Pin_ALL, Colum_Pin_ALL;
     extern uint8_t CustomKey[ROW_SIZE][COL_SIZE];
     extern uint8_t Extra_CustomKey[ROW_SIZE][COL_SIZE];
+    extern uint8_t SP_Key_Map[SP_KEY_NUMBER][8];
     extern uint8_t KeyMatrix[ROW_SIZE][COL_SIZE];
-    extern uint8_t KEYBOARD_data_index;
     extern Keyboard_Status_t g_keyboard_status;
 
     void DATAFLASH_Read_KeyArray( void );

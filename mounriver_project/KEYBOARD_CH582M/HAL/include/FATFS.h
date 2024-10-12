@@ -32,6 +32,8 @@
   #define FS_LINE_TOUCHBAR_BUTTON_CTL_ENA 15
   #define FS_LINE_IDLE_MAX_CNT            16
   #define FS_LINE_LP_MAX_CNT              17
+  #define FS_LINE_RF_CHECK_ACK_MS         18
+  #define FS_LINE_ENABLE_MOTOR            19
 
   uint8_t unsigned_dec_to_string(uint16_t num, char *buff, uint8_t type);
   uint8_t string_dec_to_u16(char *buff, uint16_t *num);
@@ -46,9 +48,7 @@
   void HAL_Fs_Read_ble_device_info(BLE_Device_Info_t *ble_device_info);
   void HAL_Fs_Write_keyboard_spkey(uint8_t* hid_arr);
   void HAL_Fs_Read_keyboard_spkey(uint8_t* hid_arr);
-  void HAL_Fs_Reset_keyboard_matrix(void);
   void HAL_Fs_Write_keyboard_mat(const uint8_t* fp, const uint8_t* key_arr);
-  // 强制重置布局,未使用。
   void HAL_Fs_Read_keyboard_mat(const uint8_t* fp, uint8_t* key_arr);
 
 #endif

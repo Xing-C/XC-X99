@@ -86,6 +86,7 @@ typedef union {
 #include "KEYBOARD.h"
 #include "BATTERY.h"
 #include "WS2812.h"
+#include "LIGHTMAP.h"
 #include "CORE.h"
 
 /* hal task Event */
@@ -105,7 +106,7 @@ typedef union {
 #define HAL_TEST_EVENT                      0x2000
 
 /* hal sys_message */
-#define MESSAGE_UART                        0xA0    // UART message
+#define MESSAGE_UART                        0xD0    // UART message
 #define UART0_MESSAGE                       (MESSAGE_UART|0 )    // UART0 message
 #define UART1_MESSAGE                       (MESSAGE_UART|1 )    // UART1 message
 
@@ -114,6 +115,7 @@ typedef union {
 #define KEY_MESSAGE                         0xA0    // KEY message
 #define MOUSE_MESSAGE                       0xA1    // MOUSE message
 #define VOL_MESSAGE                         0xA2    // VOL message
+#define SWITCH_MESSAGE                      0xA3    // SWITCH message
 #define HEARTBEAT_MESSAGE                   0xAA    // HEARTBEAT message
 
 #define PASSKEY_MESSAGE                     0xC0    // passkey message
@@ -124,10 +126,11 @@ typedef union {
 #define RF_WORK_MODE                        2
 
 /* HID data length */
-#define HID_MOUSE_DATA_LENGTH               4
 #define HID_KEYBOARD_DATA_LENGTH            8
+#define HID_MOUSE_DATA_LENGTH               4
 #define HID_VOLUME_DATA_LENGTH              1
-#define HID_DATA_LENGTH                     16
+#define HID_SWITCH_DATA_LENGTH              2
+#define HID_DATA_LENGTH                     19
 
 /* CodeFlash 基地址0x00000 */
 /* 0x0000~0x4FFFF 预留给程序 */
@@ -137,21 +140,22 @@ typedef union {
 /* DataFlash 基地址0x70000 */
 #if 0    // for old version
 #define DATAFLASH_ADDR_CustomKey            (8*1024)      // 从8K地址开始存放键盘布局，map空余空间：0x4~0x210C
-//#define DATAFLASH_ADDR_Extra_CustomKey      (9*1024)      // 从9K地址开始存放键盘额外布局
+#define DATAFLASH_ADDR_Extra_CustomKey      (9*1024)      // 从9K地址开始存放键盘额外布局
 #define DATAFLASH_ADDR_LEDStyle             (10*1024)     // 背光样式
 #define DATAFLASH_ADDR_BLEDevice            (10*1024+4)   // 蓝牙默认连接设备编号
 #define DATAFLASH_ADDR_RForBLE              (10*1024+8)   // 启动默认RF模式或者BLE模式
 #define DATAFLASH_ADDR_MPR121_ALG_Param     (10*1024+12)  // MPR121算法参数存储
 #endif
 
-#define SYS_PERIOD                          50            // 单位1ms
+#define SYS_PERIOD                          50            // 系统任务周期, 单位1ms
+#define WS2812_TASK_PERIOD_MS               80            // WS2812任务周期, 单位1ms
 #define DEFAULT_IDLE_MAX_PERIOD             (180 * (1000 / SYS_PERIOD)) // idle_cnt大于该值则进入屏保
 #define DEFAULT_LP_MAX_PERIOD               (240 * (1000 / SYS_PERIOD)) // idle_cnt大于该值则进入低功耗模式
 
-#define MOTOR_PIN                           GPIO_Pin_5 // 从 PB19改到PA5
-#define MOTOR_RUN()                         { GPIOA_SetBits( MOTOR_PIN ); }
-#define MOTOR_STOP()                        { GPIOA_ResetBits( MOTOR_PIN ); }
-#define MOTOR_Init()                        { GPIOA_SetBits( MOTOR_PIN ); GPIOA_ModeCfg( MOTOR_PIN, GPIO_ModeOut_PP_5mA ); MOTOR_STOP(); }
+#define MOTOR_PIN                           GPIO_Pin_5 // XC 从 PB19改到PA5
+#define MOTOR_RUN()                         { if (g_Enable_Status.motor == TRUE) GPIOA_SetBits( MOTOR_PIN ); }// XC
+#define MOTOR_STOP()                        { GPIOA_ResetBits( MOTOR_PIN ); }// XC
+#define MOTOR_Init()                        { MOTOR_STOP(); GPIOA_ModeCfg( MOTOR_PIN, GPIO_ModeOut_PP_5mA ); }// XC
 #define MOTOR_GO()                          { MOTOR_RUN(); tmos_start_task( halTaskID, MOTOR_STOP_EVENT, MS1_TO_SYSTEM_TIME(100) ); }
 
 /* CapsLock LEDOn Status */
@@ -224,6 +228,7 @@ extern UINT8 HID_DATA[HID_DATA_LENGTH];
 extern UINT8* HIDMouse;
 extern UINT8* HIDKeyboard;
 extern UINT8* HIDVolume;
+extern UINT8* HIDSwitch;
 
 extern tmosTaskID halTaskID;
 
@@ -233,6 +238,7 @@ extern Ready_Status_t g_Ready_Status;
 extern Enable_Status_t g_Enable_Status;
 extern uint8_t g_TP_speed_div;
 extern uint8_t g_Game_Mode;
+extern uint8_t wakeup_flag;
 extern enum LP_Type g_lp_type;
 extern uint32_t sys_time;
 

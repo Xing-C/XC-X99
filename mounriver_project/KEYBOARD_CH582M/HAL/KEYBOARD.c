@@ -11,6 +11,7 @@
 #include "HAL.h"
 #include "snake.h"
 
+// XC  ------------------
 // #define Row_GPIO_(x)    GPIOB_
 // #define Colum_GPIO_(x)  GPIOA_
 // 顺序Row 0-8,colum 0-10
@@ -44,7 +45,9 @@ const uint8_t Extra_KeyArrary[ROW_SIZE][COL_SIZE] = {
 /* ROW7 */{ KEY_None,   KEY_None,      KEY_None,     KEY_None,       KEY_None,     KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_None        },
 /* ROW8 */{ KEY_None,   KEY_None,      KEY_None,     KEY_None,       KEY_None,     KEY_None,     KEY_None, KEY_None, KEY_None, KEY_None, KEY_None        },
 };  // 额外默认键盘布局 - 其它键盘布局需修改此处
-const uint8_t SP_KeyArrary[][8] = {
+// XC  ------------------
+
+const uint8_t SP_KeyArrary[SP_KEY_NUMBER][8] = {
         { 0x5,      0x0,      KEY_Delete,       0x0,      0x0,      0x0,      0x0,      0x0 }, //1 - Ctrl+Alt+Del
         { 0x3,      0x0,      KEY_Delete,       0x0,      0x0,      0x0,      0x0,      0x0 }, //2 - Ctrl+Shift+Del
         { 0x0,      0x0,      0x0,              0x0,      0x0,      0x0,      0x0,      0x0 }, //3
@@ -54,15 +57,15 @@ const uint8_t SP_KeyArrary[][8] = {
         { 0x9,      0x0,      KEY_RightArrow,   0x0,      0x0,      0x0,      0x0,      0x0 }, //7 - GUI+Ctrl+Right
 };  // SP按键默认映射
 const uint8_t Key_To_LEDNumber[ROW_SIZE][COL_SIZE] = {
-/* ROW0 */{ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10 },
-/* ROW1 */{ 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27 },
-/* ROW2 */{ 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45 },
-/* ROW3 */{ 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63 },
-/* ROW4 */{ 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79 },
-/* ROW5 */{ 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96 },
-/* ROW6 */{ 11, 28, 46, 64, 80, 81, 65, 47, 29, 30, 48 },
-/* ROW7 */{ 12, 13, 31, 49, 66, 82, 97, 83, 67, 50, 32 },
-/* ROW8 */{ 14, 15, 33, 51, 68, 84, 98, 85, 52, 34, 16 },
+/* ROW0 */{ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10 }, // XC
+/* ROW1 */{ 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27 }, // XC
+/* ROW2 */{ 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45 }, // XC
+/* ROW3 */{ 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63 }, // XC
+/* ROW4 */{ 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79 }, // XC
+/* ROW5 */{ 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96 }, // XC
+/* ROW6 */{ 11, 28, 46, 64, 80, 81, 65, 47, 29, 30, 48 }, // XC
+/* ROW7 */{ 12, 13, 31, 49, 66, 82, 97, 83, 67, 50, 32 }, // XC
+/* ROW8 */{ 14, 15, 33, 51, 68, 84, 98, 85, 52, 34, 16 }, // XC
 };  // 矩阵键盘位置转LED编号
 uint32_t Row_Pin_ALL = 0, Colum_Pin_ALL = 0;
 uint8_t CustomKey[ROW_SIZE][COL_SIZE];  //自定义按键层
@@ -70,7 +73,6 @@ uint8_t Extra_CustomKey[ROW_SIZE][COL_SIZE];   //自定义额外按键层
 uint8_t KeyMatrix[ROW_SIZE][COL_SIZE] = { 0 };  //按键矩阵-标记按下和未按下
 uint8_t Extra_KeyMatrix[ROW_SIZE][COL_SIZE] = { 0 };  //额外层按键矩阵-标记按下和未按下
 uint8_t SP_Key_Map[SP_KEY_NUMBER][8] = { 0 }; //复合按键
-uint8_t KEYBOARD_data_index = 2;
 Keyboard_Status_t g_keyboard_status;
 Capslock_Status_t g_capslock_status;
 
@@ -86,7 +88,6 @@ void DATAFLASH_Read_KeyArray( void )
 {
   HAL_Fs_Read_keyboard_mat("0:keyboard_mat.txt", (uint8_t*)CustomKey);
   HAL_Fs_Read_keyboard_mat("0:keyboard_ext_mat.txt", (uint8_t*)Extra_CustomKey);
-  //memcpy(CustomKey, KeyArrary, COL_SIZE*ROW_SIZE);
 }
 
 /*******************************************************************************
@@ -97,7 +98,6 @@ void DATAFLASH_Read_KeyArray( void )
  *******************************************************************************/
 void DATAFLASH_Write_KeyArray( void )
 {
-  // HAL_Fs_Reset_keyboard_matrix();
   HAL_Fs_Write_keyboard_mat("0:keyboard_mat.txt", (const uint8_t*)CustomKey);
   HAL_Fs_Write_keyboard_mat("0:keyboard_ext_mat.txt", (const uint8_t*)Extra_CustomKey);
 }
@@ -116,7 +116,7 @@ void KEYBOARD_Reset( void )
                        TOUCHBAR_TOU_THRESH, TOUCHBAR_REL_THRESH,
                        DOUBLE_TOUCH_CNT, LONG_TOUCH_CNT,
                        1, LED_DEFAULT_BRIGHTNESS, 2,  // RF频率默认2.405G
-                       0, 180, 240
+                       0, 180, 240, 10, 0
   };
 
   memcpy(CustomKey, KeyArrary, COL_SIZE*ROW_SIZE);
@@ -164,24 +164,6 @@ UINT8 KEYBOARD_Custom_Function( void )
   if ( g_keyboard_status.Fn == TRUE && KeyboardDat->Key2 == KEY_None ) { // 按下Fn+1个键或者只有Fn键
     last_state = 1;
     press_time = sys_time;
-/*    if ( KeyboardDat->Key1 == KEY_None  ) {
-      Fn_Mode = Fn_Mode_UDiskMode;
-      Fn_cnt = 0;*/
-/*
-            #if (defined HAL_WDG) && (HAL_WDG == TRUE)
-                      WWDG_ResetCfg(DISABLE); // 关看门狗
-            #endif
-                      KEYBOARD_Reset( );
-            #if (defined HAL_WDG) && (HAL_WDG == TRUE)
-                      WWDG_ResetCfg(ENABLE);  // 开看门狗
-            #endif
-                      Fn_Mode = Fn_Mode_None;
-                      uint16_t Usb_mode = 0;
-                      uint16_t Udisk_mode = 1;
-                      HAL_Fs_Write_keyboard_cfg(FS_LINE_WORK_MODE, 1, &Usb_mode);
-                      HAL_Fs_Write_keyboard_cfg(FS_LINE_UDISK_MODE, 1, &Udisk_mode);
-                      SoftReset();
-        }*/
     if ( KeyboardDat->Key1 == KEY_None && Fn_Mode == Fn_Mode_None ) { // 键盘布局复位
       Fn_Mode = Fn_Mode_Reset;
       Fn_cnt &= 0xF0;   // 清除其余计数器
@@ -341,7 +323,7 @@ UINT8 KEYBOARD_Custom_Function( void )
 /*        Fn_Mode = Fn_Mode_None;
         if (g_Enable_Status.rf == TRUE) {
           tmos_set_event( RFTaskId, SBP_RF_JUMPBOOT_REPORT_EVT );  // RF JUMPBOOT事件
-        }*/ // 暂时禁用 修改
+        }*/ // 暂时禁用 修改  // XC
         break;
       }
       case Fn_Mode_JumpBoot: {  // Fn+B跳转kboot
@@ -363,7 +345,6 @@ UINT8 KEYBOARD_Custom_Function( void )
         break;
       }
       case Fn_Mode_PaintedEgg: {  // Fn+Delete彩蛋
-        break;
         Fn_Mode = Fn_Mode_None;
         if (g_Enable_Status.paintedegg == FALSE) {
           g_keyboard_status.changeBL = TRUE;
@@ -502,6 +483,9 @@ UINT8 KEYBOARD_Custom_Function( void )
         OLED_UI_add_CANCELINFO_delay_task(2000);
 #endif
         led_style_func = WS2812_Style_Custom;  // Fn+F1 - 关闭背光(背光保持不变)
+#if (defined HAL_TPM) && (HAL_TPM == TRUE) && (defined HAL_HW_I2C) && (HAL_HW_I2C == TRUE)
+        TPM_notify_backlight_data(BACKLIGHT_MODE_OFF);
+#endif
         break;
       }
       case Fn_Mode_LED_Style2: {
@@ -515,6 +499,9 @@ UINT8 KEYBOARD_Custom_Function( void )
         OLED_UI_add_CANCELINFO_delay_task(2000);
 #endif
         led_style_func = WS2812_Style_Breath;  // Fn+F2 - 背光使用呼吸灯模式
+#if (defined HAL_TPM) && (HAL_TPM == TRUE) && (defined HAL_HW_I2C) && (HAL_HW_I2C == TRUE)
+        TPM_notify_backlight_data(BACKLIGHT_MODE_BREATH);
+#endif
         break;
       }
       case Fn_Mode_LED_Style3: {
@@ -528,6 +515,9 @@ UINT8 KEYBOARD_Custom_Function( void )
         OLED_UI_add_CANCELINFO_delay_task(2000);
 #endif
         led_style_func = WS2812_Style_Waterful;  // Fn+F3 - 背光使用流水灯模式
+#if (defined HAL_TPM) && (HAL_TPM == TRUE) && (defined HAL_HW_I2C) && (HAL_HW_I2C == TRUE)
+        TPM_notify_backlight_data(BACKLIGHT_MODE_WATERFUL);
+#endif
         break;
       }
       case Fn_Mode_LED_Style4: {
@@ -541,6 +531,9 @@ UINT8 KEYBOARD_Custom_Function( void )
         OLED_UI_add_CANCELINFO_delay_task(2000);
 #endif
         led_style_func = WS2812_Style_Touch;  // Fn+F4 - 背光使用触控呼吸灯模式
+#if (defined HAL_TPM) && (HAL_TPM == TRUE) && (defined HAL_HW_I2C) && (HAL_HW_I2C == TRUE)
+        TPM_notify_backlight_data(BACKLIGHT_MODE_TOUCH);
+#endif
         break;
       }
       case Fn_Mode_LED_Style5: {
@@ -554,6 +547,9 @@ UINT8 KEYBOARD_Custom_Function( void )
         OLED_UI_add_CANCELINFO_delay_task(2000);
 #endif
         led_style_func = WS2812_Style_Rainbow;  // Fn+F5 - 背光使用彩虹灯模式
+#if (defined HAL_TPM) && (HAL_TPM == TRUE) && (defined HAL_HW_I2C) && (HAL_HW_I2C == TRUE)
+        TPM_notify_backlight_data(BACKLIGHT_MODE_RAINBOW);
+#endif
         break;
       }
       case Fn_Mode_LED_Style6: {
@@ -567,6 +563,9 @@ UINT8 KEYBOARD_Custom_Function( void )
         OLED_UI_add_CANCELINFO_delay_task(2000);
 #endif
         led_style_func = WS2812_Style_Normal;  // Fn+F6 - 背光使用固定亮度
+#if (defined HAL_TPM) && (HAL_TPM == TRUE) && (defined HAL_HW_I2C) && (HAL_HW_I2C == TRUE)
+        TPM_notify_backlight_data(BACKLIGHT_MODE_NORMAL);
+#endif
         break;
       }
       case Fn_Mode_GiveUp: {
@@ -641,6 +640,7 @@ void KEYBOARD_Detection( void )
     uint8_t current_row;
 #endif
     static uint8_t Touchbar_SP_Key = 0;  // 大于0表示触摸条被按下
+    static uint8_t CapsLock_cnt = 0;  // 按下capslock后延迟弹起计数
     static BOOL press_Normal_Key = FALSE;
     uint8_t key_idx, i, j;
     mpr121_operation_data_t oper_dat;
@@ -665,20 +665,18 @@ void KEYBOARD_Detection( void )
       } else if (Touchbar_SP_Key) {
           if (--Touchbar_SP_Key == 0) {  // 触摸条SP键的持续时间到达
               memset(KeyboardDat->data, 0, HID_KEYBOARD_DATA_LENGTH);
-              KEYBOARD_data_index = 2;
               g_Ready_Status.keyboard_key_data = TRUE;  // 产生事件
           }
           return;
       }
     }
     /* CapsLock功能相关 */
-    if(g_capslock_status.press_Capslock_NormalKey){ // 短按CapsLock后，弹起CapsLock
+    if (CapsLock_cnt > 0) CapsLock_cnt--;
+    if (g_capslock_status.press_Capslock_NormalKey && CapsLock_cnt == 0){ // 短按CapsLock后，弹起CapsLock
       g_capslock_status.press_Capslock_NormalKey = FALSE;
         for (key_idx = 2; key_idx < 8; key_idx++) {
             if (KeyboardDat->data[key_idx] == KEY_CapsLock) {
-                 memcpy(&KeyboardDat->data[key_idx], &KeyboardDat->data[key_idx] + 1, 7 - key_idx);
-                 KeyboardDat->Key6 = 0;
-                 KEYBOARD_data_index--;
+                KeyboardDat->data[key_idx] = 0;
             }
         }
         g_Ready_Status.keyboard_key_data = TRUE;  // 产生事件
@@ -693,17 +691,20 @@ void KEYBOARD_Detection( void )
         if (KeyMatrix[current_row][current_colum] == 0 && Row_GPIO_(ReadPortPin)( Row_Pin[current_row] ) == 0) {  // 按下
 #endif
             if (g_keyboard_status.SP_Key != 0) continue;  // SP键生效后不接受其余按键
-            else if (KEYBOARD_data_index >= HID_KEYBOARD_DATA_LENGTH && KeyArr_Ptr[current_row][current_colum] < KEY_LeftCTRL && KeyArr_Ptr[current_row][current_colum] > KEY_None) continue;    // 超过6个普通按键上限
             KeyMatrix[current_row][current_colum] = 1;  // 矩阵状态变成按下
-            if (led_style_func != WS2812_Style_Off && Key_To_LEDNumber[current_row][current_colum] != 0xFF) { // 触控呼吸灯模式
+
+            /*  // XC
+            if (led_style_func != WS2812_Style_Off && Key_To_LEDNumber[current_row][current_colum] != 0xFF) { // 灯光开启时
 
               uint8_t led_number = Key_To_LEDNumber[current_row][current_colum];
               HW_I2C_SendLEDNumber(led_number);
 
-              // 修改
-              //                LED_BYTE_Buffer[Key_To_LEDNumber[current_row][current_colum]][0] =
-              //                LED_BYTE_Buffer[Key_To_LEDNumber[current_row][current_colum]][1] =
-              //                LED_BYTE_Buffer[Key_To_LEDNumber[current_row][current_colum]][2] = g_LED_brightness;
+            // XC 修改 */
+
+            if (led_style_func == WS2812_Style_Touch && Key_To_LEDNumber[current_row][current_colum] != 0xFF) { // 触控呼吸灯模式
+                LED_BYTE_Buffer[Key_To_LEDNumber[current_row][current_colum]][0] =
+                LED_BYTE_Buffer[Key_To_LEDNumber[current_row][current_colum]][1] =
+                LED_BYTE_Buffer[Key_To_LEDNumber[current_row][current_colum]][2] = g_LED_brightness;
             }
             g_Ready_Status.keyboard_key_data = TRUE; // 产生事件
 
@@ -730,16 +731,14 @@ void KEYBOARD_Detection( void )
             } else {
                 press_Normal_Key = TRUE;
                 if (CustomKey[current_row][current_colum] == KEY_CapsLock ) {  // CapsLock处理
-                  // 注释掉以下与 Layer 1 相关的代码行
-                  // KeyArr_Ptr = Extra_CustomKey;
-                  // g_capslock_status.press_Capslock = TRUE;
+                    KeyArr_Ptr = Extra_CustomKey;
+                    g_capslock_status.press_Capslock = TRUE;
                 } else {
-                    for (key_idx = 2; key_idx < KEYBOARD_data_index; key_idx++) {
-                        if (KeyboardDat->data[key_idx] == KeyArr_Ptr[current_row][current_colum])
-                            break;
-                    }
-                    if (key_idx == KEYBOARD_data_index) {
-                        KeyboardDat->data[KEYBOARD_data_index++] = KeyArr_Ptr[current_row][current_colum];
+                    for (key_idx = 2; key_idx < HID_KEYBOARD_DATA_LENGTH; key_idx++) {
+                        if (KeyboardDat->data[key_idx] == KEY_None) {
+                          KeyboardDat->data[key_idx] = KeyArr_Ptr[current_row][current_colum];
+                          break;
+                        }
                     }
                 }
             }
@@ -755,7 +754,6 @@ void KEYBOARD_Detection( void )
             } else if (KeyArr_Ptr[current_row][current_colum] >= KEY_SP_1) {  // SP键(单键复合)
                 g_keyboard_status.SP_Key = 0;
                 memset(KeyboardDat->data, 0, HID_KEYBOARD_DATA_LENGTH);
-                KEYBOARD_data_index = 2;
             } else if (KeyArr_Ptr[current_row][current_colum] >= KEY_MouseL) {    // 鼠标操作
                 MouseDat->data[0] &= ~(1 << KeyArr_Ptr[current_row][current_colum] - KEY_MouseL);
                 g_Ready_Status.keyboard_mouse_data = TRUE;  // 产生鼠标事件
@@ -770,34 +768,29 @@ void KEYBOARD_Detection( void )
                     if (g_keyboard_status.SP_Key) { // 有使用SP键
                       g_keyboard_status.SP_Key = 0;
                       memset(KeyboardDat->data, 0, HID_KEYBOARD_DATA_LENGTH);
-                      KEYBOARD_data_index = 2;
                       break;
                     }
                   } else { // 单纯按下capslock键
-                      KeyboardDat->data[KEYBOARD_data_index++] = KEY_CapsLock;
+                      for (key_idx = 2; key_idx < HID_KEYBOARD_DATA_LENGTH; key_idx++) {
+                          if (KeyboardDat->data[key_idx] == KEY_None) {
+                            KeyboardDat->data[key_idx] = KEY_CapsLock;
+                            break;
+                          }
+                      }
+                      CapsLock_cnt = 3; // capslock会被按下直到该计数值为0后释放
                       g_capslock_status.press_Capslock_NormalKey = TRUE;
                   }
                   g_capslock_status.press_Capslock_with_other = FALSE;
                 } else {
-                    uint8_t p = 2;  // 双指针实现删除按键
                     uint8_t tmp_key;
-                    for (key_idx = 2; key_idx < 8; key_idx++) {
+                    for (key_idx = 2; key_idx < HID_KEYBOARD_DATA_LENGTH; key_idx++) {
                         if (KeyboardDat->data[key_idx] != KEY_None) {
-                          // 注释掉以下与 Layer 1 相关的条件判断
-                          // if ((KeyboardDat->data[key_idx] != CustomKey[current_row][current_colum] &&
-                          //     KeyboardDat->data[key_idx] != Extra_CustomKey[current_row][current_colum])) {  // 弹起按键2层都清除
-                          if (KeyboardDat->data[key_idx] != CustomKey[current_row][current_colum]) {  // 弹起按键仅清除主布局（Layer 0）
-                            tmp_key = KeyboardDat->data[key_idx];
-                            KeyboardDat->data[key_idx] = KEY_None;
-                            KeyboardDat->data[p] = tmp_key;
-                            p++;
-
-                        } else {
-                            KeyboardDat->data[key_idx] = KEY_None;
-                        }
+                          if ((KeyboardDat->data[key_idx] == CustomKey[current_row][current_colum] ||
+                              KeyboardDat->data[key_idx] == Extra_CustomKey[current_row][current_colum])) {  // 弹起按键2层都清除
+                              KeyboardDat->data[key_idx] = KEY_None;
+                          }
                         }
                     }
-                    KEYBOARD_data_index = p;
                 }
             }
         }
@@ -830,7 +823,7 @@ uint8_t KEYBOARD_EnterNumber(uint32_t *key, const char* preStr, const char* post
 {
   static uint8_t idx = 0;
   static uint32_t passkey = 0;
-  static char passkey_str[25] = { '\0' };
+  static char passkey_str[12] = { '\0' };
   const uint8_t keyhash[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
   if ( KeyboardDat->Key1 == KEY_BACKSPACE ) { // 退格单独处理
       if ( idx > 0 ) {

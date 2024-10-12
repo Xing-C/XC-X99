@@ -23,7 +23,7 @@ static SnakePos PosDirToPos(SnakePos target, uint8_t target_dir);
 static BOOL CheckOverlap( SnakePos target );
 static void ShowSnake( void );
 
-const uint8_t SnakeMatrix[14][6] = {
+const uint8_t SnakeMatrix[COL_SIZE][ROW_SIZE] = {
   { 0,    14,   28,   42,   56,   69 }, //1
   { 1,    15,   29,   43,   56,   70 }, //2
   { 2,    16,   30,   44,   57,   70 }, //3

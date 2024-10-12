@@ -440,7 +440,7 @@ void OLED_UI_show_version(uint8_t ena)
     //-OLED_Scroll(5, 5, 16, 48, 2, 1, 0);
   } else {
     OLED_Clr(0, 2, 63, 8);
-    // OLED_WR_Byte(0x2E, OLED_CMD);   // 停止滚动
+    //-OLED_WR_Byte(0x2E, OLED_CMD);   // 停止滚动
   }
 #endif
 }
